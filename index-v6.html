@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Force Showcase: The Evolution of Call of Duty</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #040812;
+  --bg2: #09101d;
+  --amb: #ff5500;
+  --cy: #00f0ff;
+  --em: #10b981;
+  --vi: #a855f7;
+}
+* { box-sizing: border-box; }
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: #e6edf7;
+  font-family: Inter, system-ui, sans-serif;
+  user-select: none;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--cy); outline-offset: 2px; }
+
+#wrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(ellipse at 70% 100%, #1a0d08, var(--bg) 60%);
+}
+#top {
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid rgba(255, 85, 0, 0.28);
+  position: relative;
+  z-index: 25;
+}
+#prog {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--amb);
+  box-shadow: 0 0 10px var(--amb);
+  transition: width 0.4s ease;
+}
+
+#vp {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+#deck {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1280px;
+  height: 720px;
+  transform-origin: center;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid rgba(255, 85, 0, 0.22);
+  box-shadow: 0 0 60px rgba(255, 85, 0, 0.14);
+}
+
+#bg, #bgB {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+#haze {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 85% 110%, rgba(255, 85, 0, 0.25), transparent 55%),
+    radial-gradient(ellipse at 10% 0%, rgba(0, 240, 255, 0.08), transparent 50%),
+    radial-gradient(ellipse at 18% 88%, rgba(160, 178, 196, 0.08), transparent 55%),
+    radial-gradient(ellipse at 78% 58%, rgba(255, 140, 60, 0.07), transparent 50%);
+  pointer-events: none;
+}
+#embers { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+#intel {
+  position: absolute;
+  right: 56px;
+  top: 104px;
+  width: 430px;
+  z-index: 3;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#iframe {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 0 1px rgba(255, 85, 0, 0.35), 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 240, 255, 0.14);
+  background: linear-gradient(135deg, #0b1424, #1a0d08);
+}
+#intelImg {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+}
+.scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px);
+}
+.scan:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 28%;
+  top: 0;
+  transform: translateY(-100%);
+  background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.1), transparent);
+  animation: sweep 7s linear infinite;
+}
+@keyframes sweep { to { transform: translateY(360%); } }
+
+.cn { position: absolute; width: 16px; height: 16px; border: 2px solid var(--amb); z-index: 2; }
+.c1 { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.c2 { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.c3 { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.c4 { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+#icap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 14px 8px;
+  background: linear-gradient(transparent, rgba(4, 8, 18, 0.94));
+  font-size: 12px;
+  color: #fff;
+  z-index: 1;
+}
+#pcard { margin-top: 10px; padding: 10px 14px; }
+#prole { font-size: 13px; color: #9fb3c8; margin-top: 2px; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 44px 56px;
+}
+.slide.in { animation: slideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+.g {
+  background: rgba(9, 16, 29, 0.74);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 85, 0, 0.3);
+  border-radius: 12px;
+}
+.g.c { border-color: rgba(0, 240, 255, 0.38); }
+.g.vi { border-color: rgba(168, 85, 247, 0.45); }
+.g.em { border-color: rgba(16, 185, 129, 0.45); }
+
+.tag { font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 0.08em; }
+.amb { color: var(--amb); }
+.cy { color: var(--cy); }
+.em { color: var(--em); }
+.vi { color: var(--vi); }
+
+h1 {
+  font-family: Orbitron, sans-serif;
+  font-weight: 800;
+  font-size: 29px;
+  line-height: 1.2;
+  margin: 6px 0 6px;
+  text-shadow: 0 0 20px rgba(255, 85, 0, 0.35);
+}
+h1.big { font-size: 31px; }
+h2 {
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #9fb3c8;
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+.col { width: 690px; }
+
+.bl {
+  list-style: none;
+  margin: 0;
+  padding: 15px 18px;
+  display: grid;
+  gap: 11px;
+  font-size: 15px;
+  line-height: 1.42;
+}
+.bl li { padding-left: 20px; position: relative; }
+.bl li:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  background: var(--amb);
+  box-shadow: 0 0 8px var(--amb);
+}
+
+.cite {
+  margin-top: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  max-width: 690px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-left: 3px solid var(--em);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #d5e3ee;
+}
+.cite .cb {
+  flex: none;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  background: var(--em);
+  color: #040812;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 690px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 690px; }
+.card { padding: 13px 15px; display: grid; gap: 3px; }
+.card b { font-family: Orbitron, sans-serif; font-size: 15px; }
+.card span { color: #9fb3c8; font-size: 13px; line-height: 1.35; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { padding: 6px 12px; font-size: 13px; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.tab {
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: rgba(9, 16, 29, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+.tab.on {
+  background: var(--amb);
+  border-color: var(--amb);
+  color: #040812;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 85, 0, 0.45);
+}
+
+.dos {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 22px;
+  width: 690px;
+  min-height: 220px;
+}
+.dos .yr {
+  font-family: Orbitron, sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  color: var(--amb);
+  text-shadow: 0 0 20px rgba(255, 85, 0, 0.45);
+  line-height: 1;
+}
+.dos h3 { font-family: Orbitron, sans-serif; font-size: 20px; margin: 3px 0 6px; color: #fff; }
+.dos p { font-size: 15px; line-height: 1.45; margin: 0; color: #dbe6f2; }
+
+.stats { display: flex; gap: 14px; margin-top: 12px; width: 690px; }
+.stat {
+  padding: 16px 18px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.stats.two .num { font-size: 44px; }
+.num {
+  font-family: Orbitron, sans-serif;
+  font-weight: 800;
+  font-size: 50px;
+  color: var(--amb);
+  text-shadow: 0 0 20px rgba(255, 85, 0, 0.45);
+  line-height: 1;
+}
+.num.cy { color: var(--cy); text-shadow: 0 0 20px rgba(0, 240, 255, 0.45); }
+.num.vi { color: var(--vi); text-shadow: 0 0 20px rgba(168, 85, 247, 0.45); }
+.lbl { font-size: 14px; color: #c4d2e2; margin-top: 6px; font-weight: 500; }
+
+.handoff-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  margin-bottom: 10px;
+  width: 690px;
+}
+
+.qa-call {
+  font-family: Orbitron, sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.25;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 85, 0, 0.5);
+  padding: 14px;
+  border-left: 4px solid var(--amb);
+}
+.qz { padding: 16px 18px; }
+.bd { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+.bd div {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  text-align: center;
+  padding: 5px 3px;
+  border-radius: 6px;
+  border: 1px solid #2a3547;
+  color: #566478;
+}
+.bd div.lit {
+  color: #040812;
+  background: var(--em);
+  border-color: var(--em);
+  box-shadow: 0 0 10px var(--em);
+}
+.bd div.lit:last-child {
+  background: var(--amb);
+  border-color: var(--amb);
+  box-shadow: 0 0 10px var(--amb);
+}
+.qz p { font-size: 15px; font-weight: 600; margin: 4px 0 8px; }
+.op {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  margin-bottom: 7px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  font-size: 14px;
+  transition: all 0.15s;
+}
+.op:hover:not(:disabled) { background: rgba(0, 240, 255, 0.14); }
+.op.bad { background: rgba(220, 38, 38, 0.25); border-color: #dc2626; animation: shk 0.3s; }
+.op.ok { background: rgba(16, 185, 129, 0.3); border-color: var(--em); }
+@keyframes shk { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+#hud {
+  flex: none;
+  background: rgba(4, 8, 18, 0.96);
+  border-top: 1px solid rgba(255, 85, 0, 0.45);
+  padding: 6px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  z-index: 25;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#hud .row { display: flex; justify-content: space-between; align-items: center; }
+.nb {
+  padding: 5px 14px;
+  border: 1px solid var(--cy);
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(0, 240, 255, 0.08);
+}
+.nb:hover, .b:hover {
+  background: rgba(0, 240, 255, 0.16);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+.b {
+  padding: 4px 11px;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  background: transparent;
+}
+.b.on { background: var(--em); color: #040812; border-color: var(--em); }
+
+#toggleScriptBtn {
+  padding: 4px 13px;
+  border-radius: 9999px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: var(--cy);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+#toggleScriptBtn:hover {
+  background: rgba(0, 240, 255, 0.18);
+  border-color: var(--cy);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+#scriptDrawer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+#scriptDrawer.open {
+  max-height: 105px;
+  opacity: 1;
+  margin-top: 3px;
+}
+
+#scr {
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: #fff;
+  overflow: auto;
+  max-height: 68px;
+  border-left: 3px solid var(--amb);
+  padding-left: 10px;
+}
+#pres {
+  background: var(--amb);
+  color: #040812;
+  padding: 4px 11px;
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+#mic:before { content: "● "; animation: fl2 1.4s infinite alternate; }
+@keyframes fl2 { from { opacity: 1; } to { opacity: 0.25; } }
+
+#idx {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(4, 8, 18, 0.9);
+  backdrop-filter: blur(12px);
+  display: none;
+  padding: 50px 7vw;
+  overflow: auto;
+}
+#idx.open { display: block; }
+#idx .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.ix {
+  padding: 10px 12px;
+  text-align: left;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 85, 0, 0.3);
+  background: rgba(9, 16, 29, 0.85);
+  font-size: 13px;
+}
+.ix small { display: block; font-family: 'Share Tech Mono', monospace; color: var(--cy); font-size: 11px; }
+.ix.cur { border-color: var(--cy); box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
+.ix:hover { border-color: var(--amb); }
+
+#nvgv {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  display: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 20, 0, 0.85) 100%);
+  mix-blend-mode: multiply;
+}
+#nvgv:after { content: ""; position: absolute; inset: 0; background: rgba(16, 185, 129, 0.12); }
+body.nvg #wrap { filter: grayscale(1) sepia(1) hue-rotate(60deg) saturate(3.2) brightness(1.15) contrast(1.1); }
+body.nvg #nvgv { display: block; }
+
+#nvgToast {
+  position: fixed;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  z-index: 45;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.4s ease;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: rgba(6, 25, 15, 0.95);
+  border: 1px solid var(--em);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #34d399;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#nvgToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div id="wrap">
+  <div id="top">
+    <div class="tag amb">CALL OF DUTY // TASK FORCE SHOWCASE <span class="em">// BUILD v6.4</span></div>
+    <div class="flex gap-2 items-center">
+      <span id="cnt" class="tag cy mr-2">01 / 25</span>
+      <button class="b" id="bIdx">MISSION INDEX [M]</button>
+      <button class="b on" id="bSfx">SFX: ON</button>
+      <button class="b" id="bNvg">[OPTICS: NVG] [N]</button>
+    </div>
+    <div id="prog"></div>
+  </div>
+
+  <div id="vp">
+    <div id="deck">
+      <div id="bg"></div>
+      <div id="bgB"></div>
+      <div id="haze"></div>
+      <canvas id="embers" width="1280" height="720"></canvas>
+      
+      <!-- Right-side Tactical Intel Asset Card -->
+      <div id="intel">
+        <div id="iframe">
+          <img id="intelImg" alt="Classified Intel Asset">
+          <div class="scan"></div>
+          <i class="cn c1"></i><i class="cn c2"></i><i class="cn c3"></i><i class="cn c4"></i>
+          <div id="icap" class="tag"></div>
+        </div>
+        <div class="g" id="pcard">
+          <div class="tag amb" id="pname"></div>
+          <div id="prole"></div>
+        </div>
+      </div>
+
+      <!-- Active Slide Injection Stage -->
+      <div class="slide" id="slide"></div>
+    </div>
+  </div>
+
+  <div id="hud">
+    <div class="row">
+      <div id="pres"></div>
+      
+      <!-- Prompter Script Toggle Button -->
+      <button id="toggleScriptBtn" title="Toggle B1 Spoken Script Drawer (Hotkey: P)">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+        <span id="toggleScriptLabel">SPEAKER SCRIPT [P]</span>
+        <svg id="chevronScript" class="w-3.5 h-3.5 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <div class="flex gap-2">
+        <button class="nb" id="bPrev">[←] PREV</button>
+        <button class="nb" id="bNext">NEXT [→]</button>
+      </div>
+    </div>
+
+    <!-- Collapsible Drawer Container -->
+    <div id="scriptDrawer">
+      <div class="row tag" style="font-size:12px; color:#9fb3c8">
+        <span>SPEAKER PROMPTER // B1 SPOKEN ENGLISH SCRIPT</span>
+        <span class="em" id="mic">AUDITORIUM MICROPHONE READY</span>
+      </div>
+      <div id="scr"></div>
+    </div>
+  </div>
+</div>
+
+<div id="idx">
+  <div class="tag amb">MISSION INDEX // SELECT SLIDE (ESC TO CLOSE)</div>
+  <div class="grid" id="ixg"></div>
+</div>
+<div id="nvgv"></div>
+
+<!-- Tactical HUD Notification -->
+<div id="nvgToast">
+  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+  <span id="nvgToastText">[HUD TELEMETRY // GEN-3 PHOSPHOR OPTICS ENGAGED]</span>
+</div>
+
+<script>
+const IMG = {
+  price: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/price.png",
+  ghost: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/ghost.png",
+  wwii: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/wwii.jpg",
+  blackops: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/blackops.jpg",
+  warzone: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/warzone.jpg",
+  zombies: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/zombies.jpg",
+  cdl: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/cdl.jpg"
+};
+Object.values(IMG).forEach(u => { const i = new Image(); i.src = u; });
+
+const T = "Turki Allahyani", M = "Malik Mohammed", G = "Mohamed Ghazi", Z = "Ziad Allahmade";
+const S = (id, presenter, category, title, subtitle, bullets, source, stat, statLabel, prompterScript, image, layoutType, actor, extra) => 
+  ({ id, presenter, category, title, subtitle, bullets, source, stat, statLabel, prompterScript, image, layoutType, actor, ...extra });
+
+const SLIDES = [
+  /* SLIDE 01: TITLE BRIEFING */
+  S(1, T, "Introduction", "TASK FORCE SHOWCASE: THE EVOLUTION OF CALL OF DUTY", 
+    "From a 2003 World War II game to the world's biggest military action series",
+    [T, M, G, Z], "", "", "",
+    "Welcome everyone to our presentation. Today, our team will explore how Call of Duty grew from a 2003 World War II game into the world's biggest military action series.",
+    IMG.wwii, "title", "price"),
+
+  /* SLIDE 02: TEAM ROSTER */
+  S(2, T, "Team Structure", "Team Structure & Speaking Roles", 
+    "Four operators, one cohesive mission",
+    [
+      T + "|Introduction + Conclusion|Slides 01–07 · 22–25|2-3 min (Intro) · 1-2 min (Conclusion)",
+      M + "|Evolution of Warfare|Slides 08–12|2-3 min",
+      G + "|Modes & Ecosystem|Slides 13–17|2-3 min",
+      Z + "|Community & Esports|Slides 18–21|2-3 min"
+    ], "", "", "",
+    "Our team has four members. I will introduce and conclude our presentation, Malik explores the evolution of warfare, Mohamed presents the game modes, and Ziad covers community and esports.",
+    IMG.wwii, "team", "price"),
+
+  /* SLIDE 03: TURKI SECTION BRIEFING */
+  S(3, T, "Section 1 Briefing", "Franchise Origins", 
+    "Infinity Ward and the World War II roots",
+    ["Studio: Infinity Ward", "Setting: World War II", "Mission: How the series began"],
+    "", "", "",
+    "Let me begin with the origins of Call of Duty. The franchise started with studio Infinity Ward in 2003, using World War II as its opening battlefield.",
+    IMG.wwii, "section", "price", 
+    { main: "Call of Duty grew from a World War II game into a large game series with many different settings." }),
+
+  /* SLIDE 04: THE FIRST DEPLOYMENT 2003 */
+  S(4, T, "Origins", "The First Deployment", "October 29, 2003",
+    [
+      "Released on PC on October 29, 2003",
+      "Developed by Infinity Ward (22 veteran team)",
+      "Set across the European theater in World War II"
+    ],
+    "Source: CallofDuty.com (20th Anniversary, 2023) & Activision Official Archives (2003)", "", "",
+    "The first Call of Duty launched on PC on October 29, 2003. Developed by Infinity Ward, this debut marked the first step of a historic twenty-year journey.",
+    IMG.wwii, "content", "ghost"),
+
+  /* SLIDE 05: SQUAD WARFARE INNOVATIONS */
+  S(5, T, "Origins", "Squad Warfare Innovation", "Breaking the 'lone wolf' shooter formula",
+    [
+      "01 Squad AI Companions|Fight as part of an advancing squad, not a lone superhero.",
+      "02 Shell Shock Effect|Nearby explosions create blurred vision, ringing and disorientation.",
+      "03 Iron Sights Aiming|Raising weapons to aim down sights (ADS) set the universal FPS standard."
+    ],
+    "Award: 2004 Game Developers Choice 'Game of the Year'", "", "",
+    "The original release revolutionized shooters. Players fought alongside AI squadmates from American, British, and Soviet fronts, while realistic shell-shock effects simulated true battlefield intensity.",
+    IMG.wwii, "cards3", "price"),
+
+  /* SLIDE 06: MILESTONE DOSSIER */
+  S(6, T, "Origins", "Milestone Dossier", "Click an era to inspect declassified intelligence records",
+    [],
+    "Source: CallofDuty.com (20th Anniversary, 2023) & Activision Financial Report (2021)", "", "",
+    "In 2003, Infinity Ward launched the original Call of Duty on PC, establishing historic World War II squad combat.",
+    IMG.wwii, "dossier", "ghost"),
+
+  /* SLIDE 07: TURKI KPI DASHBOARD */
+  S(7, T, "Data Metric", "Lifetime Sales Record", "Official Activision verified sales archive",
+    [
+      "Top 3 All-Time|Alongside Mario and Tetris in worldwide video game history.",
+      "20+ Years Continuous|A new mainline release delivered consistently every autumn.",
+      "Millions Daily|Active community spanning console, PC and mobile in 190 countries."
+    ],
+    "Source: CallofDuty.com (Franchise 400M Milestone Announcement, April 2021)",
+    "400M+", "Premium games sold worldwide by April 2021",
+    "That initial deployment in 2003 laid the groundwork for everything that followed. Malik is now going to explain how the gameplay and settings evolved over time.",
+    IMG.wwii, "stat", "price", { handoff: "NEXT BRIEFING: EVOLUTION OF WARFARE [→]" }),
+
+  /* SLIDE 08: MALIK SECTION BRIEFING */
+  S(8, M, "Section 2 Briefing", "Evolution of Warfare", "From Normandy trenches to night-vision covert ops",
+    [
+      "From World War II to modern combat",
+      "From modern settings to futuristic cybernetics",
+      "New gameplay for new generations of players"
+    ],
+    "", "", "",
+    "Building on those origins, Section 2 explores how Call of Duty evolved from historical trenches into high-tech contemporary and future warfare.",
+    IMG.blackops, "section", "ghost",
+    { main: "The Call of Duty series changed its settings and gameplay to give players new experiences.", handoffFrom: "SECTOR BRIEFING // OPERATOR: MALIK MOHAMMED" }),
+
+  /* SLIDE 09: MODERN WARFARE 2007 */
+  S(9, M, "Evolution of Warfare", "Modern Warfare Revolution", "2007: Combat enters the contemporary era",
+    [
+      "Contemporary combat replaced historical World War II bolt-action weapons.",
+      "Create-a-Class & Perks let players build and customize personal loadouts.",
+      "Killstreak rewards gave airstrikes, UAV radar and helicopter air support."
+    ],
+    "Source: CallofDuty.com (Modern Warfare Historical Impact, 2023)", "", "",
+    "In 2007, Modern Warfare redefined gaming. Bolt-action rifles were replaced with modern assault gear, customizable perks, and tactical killstreak rewards.",
+    IMG.price, "content", "price"),
+
+  /* SLIDE 10: FUTURE COMBAT & CYBERNETICS */
+  S(10, M, "Evolution of Warfare", "Future Combat & Cybernetics", "Advanced movement and futuristic soldiers",
+    [
+      "01 Exoskeleton Suits|Boost jumps and omnidirectional dodges added high vertical mobility.",
+      "02 Wall-Running Agility|Black Ops III perfected chain-movement across buildings without stopping.",
+      "03 Specialist Abilities|Unique futuristic powers like Gravity Spikes and Annihilator revolver."
+    ],
+    "Source: Activision Press Release (Black Ops III Launch Metrics, 2015)", "", "",
+    "Later, Black Ops III pushed combat into the future with athletic thrust-jumps, wall-running agility, and unique Specialist cybernetic abilities.",
+    IMG.blackops, "cards3", "ghost"),
+
+  /* SLIDE 11: UNIVERSAL CROSSPLAY 2019 */
+  S(11, M, "Evolution of Warfare", "Universal Crossplay (2019)", "Uniting PlayStation, Xbox, and PC into one ecosystem",
+    [
+      "Universal matchmaking lobby uniting console and PC players seamlessly.",
+      "Cross-progression: your ranks, weapons and battle pass follow you everywhere.",
+      "Brand new engine with realistic photogrammetry, ray tracing, and spatial audio."
+    ],
+    "Source: Activision (Modern Warfare Technical Launch Report, 2019)", "", "",
+    "Modern Warfare 2019 achieved a major technical milestone by introducing universal crossplay and cross-progression, connecting friends across console and PC platforms.",
+    IMG.price, "content", "price"),
+
+  /* SLIDE 12: MALIK KPI DASHBOARD */
+  S(12, M, "Data Metric", "Black Ops III Launch", "Opening weekend online engagement shockwave",
+    [
+      "$550M+ Revenue|The biggest entertainment launch of the entire year 2015.",
+      "Record User Retention|Highest daily average playtime per player in franchise history.",
+      "Three Full Modes|Campaign, Multiplayer and Zombies all featured 4-player online co-op."
+    ],
+    "Source: Activision Financial & Engagement Release (November 2015)",
+    "75M+", "Hours of online play in the first 3 days",
+    "Once those modern mechanics and crossplay unified the players, the next step was variety. Mohamed will walk us through the core game modes and online ecosystem.",
+    IMG.blackops, "stat", "ghost", { handoff: "NEXT BRIEFING: GAME MODES & ECOSYSTEM [→]" }),
+
+  /* SLIDE 13: MOHAMED SECTION BRIEFING */
+  S(13, G, "Section 3 Briefing", "Game Modes & Online Ecosystem", "Something tailored for every category of player",
+    [
+      "Cinematic Campaign",
+      "Multiplayer 6v6 Arena",
+      "Co-op Zombies and Warzone Battle Royale"
+    ],
+    "", "", "",
+    "To engage millions of different players daily, Call of Duty established three distinct pillars of gameplay across solo, competitive, and co-op formats.",
+    IMG.zombies, "section", "price",
+    { main: "Call of Duty stays popular by offering different game modes for different types of players.", handoffFrom: "SECTOR BRIEFING // OPERATOR: MOHAMED GHAZI" }),
+
+  /* SLIDE 14: THE THREE PILLARS */
+  S(14, G, "Game Modes", "The Three Pillars of Combat", "A complete three-in-one gameplay ecosystem",
+    [
+      "01 Cinematic Campaign|Story-driven missions with Hollywood voice acting and explosive set pieces.",
+      "02 Multiplayer Arena|Fast-paced 6v6 combat on iconic maps like Nuketown, Crash and Terminal.",
+      "03 Cooperative Zombies|4-player wave survival with Pack-a-Punch weapons, mystery boxes and lore."
+    ],
+    "Source: CallofDuty.com (WWII Tri-Mode Architecture, 2017)", "", "",
+    "Every mainline title unites three pillars: story-driven cinematic campaigns, fast-paced 6v6 multiplayer arenas, and 4-player cooperative Zombies survival.",
+    IMG.zombies, "cards3", "ghost"),
+
+  /* SLIDE 15: ZOMBIES CO-OP PHENOMENON */
+  S(15, G, "Game Modes", "Cooperative Phenomenon: Zombies", "From secret World at War Easter Egg to global cultural craze",
+    [
+      "4-player co-op survival holding out against endless undead rounds.",
+      "Classic Perk-a-Colas (Juggernog, Speed Cola) and Pack-a-Punch upgrades.",
+      "Rich comic multiverse lore with Easter eggs searched by millions of players."
+    ],
+    "Source: CallofDuty.com (Zombies Chronicles & World at War Retrospective, 2023)", "", "",
+    "Zombies began in 2008 as a secret Easter egg and grew into a worldwide cultural craze, uniting squads to solve intricate narrative puzzles and survive endless rounds.",
+    IMG.zombies, "content", "price"),
+
+  /* SLIDE 16: WARZONE BATTLE ROYALE */
+  S(16, G, "Game Modes", "Battle Royale Disruption: Warzone", "March 2020: The free-to-play tactical revolution",
+    [
+      "01 150-Player Drop|Massive infiltration into the dense city environment of Verdansk.",
+      "02 The Gulag 1v1|Revolutionary second-chance duel in prison showers for instant redeploy.",
+      "03 In-Match Economy|Earned cash to purchase custom loadout drops, UAV radar and squad revives."
+    ],
+    "Source: CallofDuty.com (Warzone Official Release & Ecosystem Overview, 2020)", "", "",
+    "In March 2020, Warzone disrupted the industry. 150 combatants dropped into Verdansk, featuring contracts, custom loadout drops, and the iconic 1v1 Gulag duel.",
+    IMG.warzone, "cards3", "ghost"),
+
+  /* SLIDE 17: MOHAMED KPI DASHBOARD */
+  S(17, G, "Data Metric", "Massive Player Reach", "Official Activision verified community scale",
+    [
+      "Over 500M Hours|Modern Warfare multiplayer recorded massive global engagement.",
+      "Nearly 300M Matches|Played across multiplayer arenas within months of launch.",
+      "Worldwide Crossplay|Millions of daily squad drops across consoles and PC platforms."
+    ],
+    "Source: CallofDuty.com (Warzone 100M Milestone, 2021) & Activision Report (2020)",
+    "100M+", "Registered Warzone players by April 2021",
+    "With millions of players engaging across campaigns, multiplayer, and Warzone, the community naturally expanded into high-level competition. Ziad will now cover community culture and esports.",
+    IMG.warzone, "stat", "price",
+    { stat2: "500M+", statLabel2: "Modern Warfare MP hours played", handoff: "NEXT BRIEFING: GLOBAL ESPORTS & CDL [→]" }),
+
+  /* SLIDE 18: ZIAD SECTION BRIEFING */
+  S(18, Z, "Section 4 Briefing", "Community & Competitive Esports", "Players become fans, fans become champions",
+    [
+      "Online competitive play",
+      "Live arena tournament events",
+      "Professional franchised city league"
+    ],
+    "", "", "",
+    "Beyond casual multiplayer, Call of Duty expanded into an arena-scale professional esports spectacle with franchised cities and stadium majors.",
+    IMG.cdl, "section", "ghost",
+    { main: "Call of Duty has built a large community through online play, events, and competitive esports.", handoffFrom: "SECTOR BRIEFING // OPERATOR: ZIAD ALLAHMADE" }),
+
+  /* SLIDE 19: CALL OF DUTY LEAGUE */
+  S(19, Z, "Esports", "The Call of Duty League (CDL)", "Inaugural 2020 franchised season",
+    [
+      "12 city-based franchise teams (e.g., OpTic Texas, Atlanta FaZe, Toronto Ultra).",
+      "4v4 competitive best-of-five format (Hardpoint, Search & Destroy, Control).",
+      "Competitive restrictions banning unbalanced gear for pure tactical skill."
+    ],
+    "Source: Call of Duty League Official Inaugural Season Announcement (2020)", "", "",
+    "The franchised Call of Duty League launched in 2020, featuring twelve city-based teams like OpTic Texas and Atlanta FaZe competing in a standardized 4v4 format.",
+    IMG.cdl, "content", "price"),
+
+  /* SLIDE 20: 2024 STADIUM MAJORS */
+  S(20, Z, "Esports", "2024 Season Stadium Tournaments", "Major live basketball arena events and global streaming",
+    [
+      "01 4 Live Majors|Four live stadium tournaments held across North America in packed arenas.",
+      "02 YouTube Live Stream|The 2024 Championship was broadcast live globally with co-streamers.",
+      "03 Passionate Fandom|Dedicated fanbases like OpTic's 'GreenWall' bring intense stadium chants."
+    ],
+    "Source: CallofDuty.com (CDL 2024 Schedule) & CDL 2024 Official Rules", "", "",
+    "The 2024 season featured four live arena Majors across North America. Matches streamed live worldwide on YouTube to hundreds of thousands of concurrent fans.",
+    IMG.cdl, "cards3", "ghost"),
+
+  /* SLIDE 21: ZIAD KPI DASHBOARD */
+  S(21, Z, "Data Metric", "Live Stadium Tournaments", "Official Call of Duty League competitive footprint",
+    [
+      "Year 2020|Inaugural year of franchised home/away city tournament structure.",
+      "Official YouTube|Official high-definition live streaming channel for all matches.",
+      "12 Pro Franchises|48 of the most skilled tactical first-person shooter players in the world."
+    ],
+    "Source: Call of Duty League (2024 Championship & Major Tournament Regulations)",
+    "4", "Major live stadium events in 2024 season",
+    "From stadium arenas to global broadcasts, competitive esports proved the franchise's lasting power. Turki will now bring our research together with the final conclusions.",
+    IMG.cdl, "stat", "price", { handoff: "MISSION DEBRIEF // TASK FORCE SYNTHESIS [→]" }),
+
+  /* SLIDE 22: 3 CORE TAKEAWAYS */
+  S(22, T, "Group Synthesis", "3 Core Task Force Takeaways", "The pillars behind 20+ years of worldwide success",
+    [
+      "A) Continuous Innovation|The series never stood still: moved from WWII to modern and future, adding crossplay.",
+      "B) Diverse Player Appeal|Solo campaigns, 6v6 arenas, co-op Zombies, and Warzone fit all gamer types.",
+      "C) Thriving Esports Scene|City-based CDL franchises, packed stadiums, and YouTube streaming maintain passion."
+    ],
+    "Key Finding: Over 400M copies sold across two decades of dominance", "", "",
+    "Bringing our findings together, three core pillars define over twenty years of franchise dominance: continuous technical adaptation, diverse gameplay appeal, and a thriving competitive scene.",
+    IMG.ghost, "cards3", "ghost"),
+
+  /* SLIDE 23: SYNTHESIS & CONSENSUS STATEMENT */
+  S(23, T, "Synthesis & Consensus", "Final Presentation Conclusion", "Recapitulation of main subtopics and unified consensus",
+    [
+      "Malik Mohammed|The series changed its settings and gameplay to give players new experiences.",
+      "Mohamed Ghazi|Different game modes, especially online play, give players many ways to play.",
+      "Ziad Allahmade|A large community and competitive esports keep the series alive."
+    ],
+    "Official Group Consensus Statement (Group Presentation Planner, 2024)", "", "",
+    "In conclusion: Malik highlighted technical evolution, Mohamed detailed ecosystem diversity, and Ziad outlined community esports. Call of Duty has grown by changing with players while keeping its focus on action and competition.",
+    IMG.price, "conclusion", "price"),
+
+  /* SLIDE 24: Q&A & KILLSTREAK INTEL CHALLENGE */
+  S(24, T + " & Team", "Q & A Session", "Tactical Intel Protocol & Q&A", "Floor comms open and interactive killstreak knowledge check",
+    [], "", "", "",
+    "Thank you for listening. The floor is now open for questions and feedback. You are also welcome to test your knowledge with our four-question killstreak challenge before proceeding to our final debrief.",
+    IMG.cdl, "qa", "ghost"),
+
+  /* SLIDE 25: DEDICATED MISSION DEBRIEF & CONCLUSION */
+  S(25, T + " & Task Force", "Final Mission Debrief", "Task Force Showcase Conclusion", "Official Group Consensus and Squad Accolades",
+    [], "", "", "",
+    "To conclude our showcase: Call of Duty has grown by changing with players while keeping its focus on action and competition. Thank you for your time, attention, and questions.",
+    IMG.price, "finale", "price")
+];
+
+const ERAS = [
+  {
+    y: "2003",
+    sc: "In 2003, Infinity Ward launched the original Call of Duty on PC, establishing historic World War II squad combat.",
+    t: "WWII Roots",
+    tabLabel: "2003: WWII ROOTS",
+    img: IMG.wwii,
+    x: "Infinity Ward launched the series on PC on October 29, 2003, establishing squad AI combat and WWII realism."
+  },
+  {
+    y: "2007",
+    sc: "In 2007, Modern Warfare revolutionized multiplayer by introducing create-a-class loadouts and killstreak rewards.",
+    t: "Modern Warfare",
+    tabLabel: "2007: MODERN WARFARE",
+    img: IMG.price,
+    x: "Modern combat arrived with create-a-class loadouts and radar/helicopter killstreaks, redefining FPS games."
+  },
+  {
+    y: "2010",
+    sc: "In 2010, Black Ops expanded the franchise with Cold War covert operations and cemented cooperative Zombies mode.",
+    t: "Black Ops Era",
+    tabLabel: "2010: BLACK OPS",
+    img: IMG.blackops,
+    x: "Black Ops brought Cold War covert operations, breaking global records and cementing Zombies co-op survival."
+  },
+  {
+    y: "2021",
+    sc: "By 2021, the franchise surpassed 400 million premium games sold, and Warzone crossed 100 million active players.",
+    t: "400M Milestone",
+    tabLabel: "2021: 400M RECORD",
+    img: IMG.warzone,
+    x: "By April 2021, the franchise surpassed 400M premium games sold, alongside Warzone crossing 100M active players."
+  }
+];
+
+const QZ = [
+  {
+    w: "Turki Allahyani (Origins)",
+    q: "When was the first Call of Duty released, and by which studio?",
+    o: ["2003 / Infinity Ward", "2007 / Treyarch", "1999 / Sledgehammer Games"],
+    a: 0
+  },
+  {
+    w: "Malik Mohammed (Evolution)",
+    q: "What major technical breakthrough did Modern Warfare (2019) introduce?",
+    o: ["Wall-running Mobility", "Universal Crossplay & Progression", "VR Solo Campaign"],
+    a: 1
+  },
+  {
+    w: "Mohamed Ghazi (Game Modes)",
+    q: "How many active players did Warzone reach by April 2021?",
+    o: ["10 Million+", "50 Million+", "100 Million+"],
+    a: 2
+  },
+  {
+    w: "Ziad Allahmade (Esports)",
+    q: "How many major live arena events were held in the 2024 CDL season?",
+    o: ["2 Majors", "4 Stadium Majors", "12 Majors"],
+    a: 1
+  }
+];
+
+const KS = ["1: UAV", "2: CARE PKG", "3: CHOPPER", "4: NUKE ☢"];
+
+let AC, sfx = true;
+const ac = () => AC || (AC = new (window.AudioContext || window.webkitAudioContext)());
+
+function tone(f, d, type, v, t0, f2) {
+  const a = ac(), o = a.createOscillator(), g = a.createGain(), t = a.currentTime + (t0 || 0);
+  o.type = type || "sine";
+  o.frequency.setValueAtTime(f, t);
+  if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+  g.gain.setValueAtTime(v, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+  o.connect(g).connect(a.destination);
+  o.start(t);
+  o.stop(t + d + 0.05);
+}
+
+function noise(d, f0, f1, v) {
+  const a = ac(), n = a.sampleRate * d, b = a.createBuffer(1, n, a.sampleRate), c = b.getChannelData(0);
+  for (let i = 0; i < n; i++) c[i] = Math.random() * 2 - 1;
+  const s = a.createBufferSource(), fl = a.createBiquadFilter(), g = a.createGain(), t = a.currentTime;
+  s.buffer = b;
+  fl.type = "lowpass";
+  fl.frequency.setValueAtTime(f0, t);
+  fl.frequency.exponentialRampToValueAtTime(f1, t + d * 0.4);
+  fl.frequency.exponentialRampToValueAtTime(f0, t + d);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(v, t + d * 0.4);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+  s.connect(fl).connect(g).connect(a.destination);
+  s.start(t);
+}
+
+const SFX = {
+  click: () => tone(1400, 0.05, "square", 0.04, 0, 700),
+  whoosh: () => noise(0.45, 180, 1200, 0.2),
+  hit: () => { tone(2600, 0.18, "triangle", 0.14); tone(3900, 0.26, "sine", 0.09, 0.03); },
+  nvg: () => tone(180, 0.6, "sine", 0.1, 0, 1900),
+  error: () => tone(160, 0.18, "sawtooth", 0.08)
+};
+const play = n => { if (sfx) try { SFX[n](); } catch (e) {} };
+
+function animateCounters() {
+  const els = document.querySelectorAll('[data-val]');
+  els.forEach(el => {
+    const target = parseFloat(el.getAttribute('data-val'));
+    if (isNaN(target)) return;
+    const prefix = el.getAttribute('data-prefix') || '';
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = 800;
+    const t0 = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - t0) / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(target * easeOut);
+      el.textContent = `${prefix}${current}${suffix}`;
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = `${prefix}${target}${suffix}`;
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+const $ = id => document.getElementById(id);
+let cur = 0, era = 0, qi = 0, isAnswering = false, qEp = 0, scriptOpen = false;
+
+const head = s => `<div class="tag amb">${s.category.toUpperCase()} // ${s.presenter.toUpperCase()}</div><h1>${s.title}</h1>${s.subtitle ? `<h2>${s.subtitle}</h2>` : ""}`;
+const src = s => s.source ? `<div class="cite"><span class="cb">ACADEMIC CITATION</span><span>${s.source}</span></div>` : "";
+const ul = s => `<ul class="g bl">${s.bullets.map(b => `<li>${b}</li>`).join("")}</ul>`;
+
+const L = {
+  title: s => `<div class="col" style="margin-top:36px">
+    <div class="tag cy">MISSION BRIEFING // AUDITORIUM</div>
+    <h1 class="big">${s.title.replace(": ", ":<br>")}</h1>
+    <h2>${s.subtitle}</h2>
+    <div class="grid2" style="margin-top:14px">
+      <div class="g card"><b class="cy" data-val="2003">0</b><span>Franchise Birth (PC)</span></div>
+      <div class="g card"><b class="amb" data-val="400" data-suffix="M+">0M+</b><span>Global Games Sold</span></div>
+      <div class="g card"><b class="cy" data-val="100" data-suffix="M+">0M+</b><span>Warzone Recruits</span></div>
+      <div class="g card"><b class="amb">CDL</b><span>Global Stadium League</span></div>
+    </div>
+  </div>`,
+
+  team: s => `<div style="width:1152px">
+    ${head(s)}
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px">
+      ${s.bullets.map((b, i) => {
+        const [n, r, sl, tm] = b.split("|");
+        const color = i === 0 ? "amb" : i === 1 ? "em" : i === 2 ? "cy" : "vi";
+        return `<div class="g card" style="padding:18px;border-left:4px solid var(--${color});min-height:230px;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div class="tag ${color}" style="font-size:11px;margin-bottom:4px">OPERATOR 0${i + 1} // ${sl}</div>
+            <b style="font-size:18px;color:#fff">${n}</b>
+            <div style="color:#9fb3c8;font-size:14px;margin-top:3px">${r}</div>
+          </div>
+          <div class="tag em" style="font-size:12px;padding:4px 8px;background:rgba(16,185,129,0.12);border-radius:6px;border:1px solid rgba(16,185,129,0.3)">
+            SPEAKING TIME: ${tm}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+  </div>`,
+
+  section: s => `<div class="col" style="margin-top:28px">
+    ${s.handoffFrom ? `<div class="g handoff-banner border-emerald-500/40 text-emerald-400"><span>${s.handoffFrom}</span><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span></div>` : ""}
+    <div class="tag cy" style="font-size:14px">${s.category.toUpperCase()}</div>
+    <h1 class="big" style="font-size:32px">${s.title}</h1>
+    <h2>${s.subtitle}</h2>
+    <div class="g" style="padding:16px 20px;border-color:var(--amb);box-shadow:0 0 20px rgba(255,85,0,.25)">
+      <div class="tag amb">MAIN IDEA IN ONE SENTENCE</div>
+      <div style="font-size:18px;font-weight:600;line-height:1.4;margin-top:4px">"${s.main}"</div>
+    </div>
+    <div class="chips" style="margin-top:14px">${s.bullets.map(b => `<div class="g chip">${b}</div>`).join("")}</div>
+  </div>`,
+
+  content: s => `<div class="col">${head(s)}${ul(s)}${src(s)}</div>`,
+
+  cards3: s => `<div class="col">
+    ${head(s)}
+    <div class="grid3" style="margin-top:8px">${s.bullets.map(b => {
+      const [t, d] = b.split("|");
+      return `<div class="g card" style="padding:14px;min-height:190px;align-content:start">
+        <b style="color:var(--amb);font-size:15px">${t}</b>
+        <span style="font-size:13px;line-height:1.35">${d}</span>
+      </div>`;
+    }).join("")}</div>
+    ${src(s)}
+  </div>`,
+
+  dossier: s => `<div class="col">
+    ${head(s)}
+    <div class="tabs">${ERAS.map((e, i) => `<button class="tab ${i === era ? "on" : ""}" data-era="${i}">${e.tabLabel}</button>`).join("")}</div>
+    <div class="g c dos" id="dos"></div>
+    ${src(s)}
+  </div>`,
+
+  stat: s => `<div style="margin-top:10px;width:690px">
+    ${head(s)}
+    <div class="stats${s.stat2 ? " two" : ""}">
+      <div class="g c stat">
+        <div class="num" data-val="${parseFloat(s.stat)}" data-suffix="${s.stat.replace(/[0-9.]/g, '')}">${s.stat}</div>
+        <div class="lbl">${s.statLabel}</div>
+      </div>
+      ${s.stat2 ? `<div class="g c stat"><div class="num cy" data-val="${parseFloat(s.stat2)}" data-suffix="${s.stat2.replace(/[0-9.]/g, '')}">${s.stat2}</div><div class="lbl">${s.statLabel2}</div></div>` : ""}
+    </div>
+    <div class="grid3" style="margin-top:12px">${s.bullets.map(b => {
+      const [t, d] = b.split("|");
+      return `<div class="g card" style="padding:12px"><b style="font-size:14px;color:var(--cy)">${t}</b><span style="font-size:12px">${d}</span></div>`;
+    }).join("")}</div>
+    ${s.handoff ? `<div class="g handoff-banner border-amber-500/50 text-amber-400" style="margin-top:10px"><span>OPERATOR INTEL COMPLETED</span><span class="font-bold">${s.handoff}</span></div>` : ""}
+    ${src(s)}
+  </div>`,
+
+  conclusion: s => `<div class="col">
+    ${head(s).replace(/<h2>.*<\/h2>/, "")}
+    <div style="display:grid;gap:8px">${s.bullets.map((b, i) => {
+      const [n, t] = b.split("|");
+      const color = i === 0 ? "em" : i === 1 ? "cy" : "vi";
+      return `<div class="g card" style="padding:10px 16px;border-left:3px solid var(--${color})">
+        <div class="tag ${color}">${n.toUpperCase()}</div>
+        <span style="color:#e6edf7;font-size:15px">"${t}"</span>
+      </div>`;
+    }).join("")}</div>
+    <div class="g" style="margin-top:10px;padding:14px 18px;border-color:var(--amb);box-shadow:0 0 20px rgba(255,85,0,.3)">
+      <div class="tag amb">OFFICIAL GROUP CONSENSUS STATEMENT</div>
+      <div style="font-size:16px;font-weight:700;line-height:1.4;margin-top:4px">${s.subtitle}</div>
+    </div>
+    ${src(s)}
+  </div>`,
+
+  qa: s => `<div id="qaWrap" style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:4px;align-items:start">
+    <div id="qaLeft">
+      <div class="qa-call">Q &amp; A — DO YOU HAVE ANY QUESTIONS?</div>
+      <div class="tag cy" style="margin-top:10px">PRESENTER: ${s.presenter.toUpperCase().replace("&", "&amp;")} // AUDITORIUM FLOOR OPEN</div>
+      <p style="color:#c4d2e2;font-size:15px;margin:6px 0 10px;line-height:1.4">Floor comms open for professor evaluation and classroom discussion.</p>
+      <div class="g" style="padding:12px 16px">
+        <div class="tag amb">TASK FORCE SPEAKING ROLES</div>
+        <div class="rl" style="font-size:13px;margin-top:4px"><b>Turki Allahyani</b> — Origins, History &amp; Synthesis</div>
+        <div class="rl" style="font-size:13px;margin-top:4px"><b>Malik Mohammed</b> — Evolution of Warfare</div>
+        <div class="rl" style="font-size:13px;margin-top:4px"><b>Mohamed Ghazi</b> — Game Modes &amp; Ecosystem</div>
+        <div class="rl" style="font-size:13px;margin-top:4px"><b>Ziad Allahmade</b> — Community &amp; Esports</div>
+      </div>
+      <button class="nb" onclick="go(1)" style="margin-top:14px;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;background:rgba(255,85,0,.15);border-color:var(--amb);color:var(--amb)">
+        <span>PROCEED TO FINAL MISSION DEBRIEF [SLIDE 25]</span>
+        <span>→</span>
+      </button>
+    </div>
+    <div class="g c qz" id="quiz"></div>
+  </div>`,
+
+  finale: s => `<div style="width:1152px;margin-top:10px">
+    <div class="tag em">MISSION ACCOMPLISHED // FINAL TASK FORCE DEBRIEF</div>
+    <h1 class="big" style="font-size:32px">Task Force Showcase Conclusion</h1>
+    <h2>Consensus Statement, Squad Accolades &amp; Course Wrap-up</h2>
+    
+    <div class="g" style="padding:16px 22px;border-color:var(--amb);margin:14px 0 18px;box-shadow:0 0 25px rgba(255,85,0,.25)">
+      <div class="tag amb font-bold">OFFICIAL GROUP CONSENSUS STATEMENT</div>
+      <div style="font-size:18px;font-weight:700;line-height:1.4;margin-top:4px;color:#fff">
+        "In conclusion, Call of Duty has grown by changing with players while keeping its focus on action and competition."
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div class="g card" style="border-left:3px solid var(--amb);padding:14px">
+        <div class="tag amb" style="font-size:11px">OPERATOR 01</div>
+        <b style="font-size:15px;color:#fff">Turki Allahyani</b>
+        <span>Origins &amp; 400M+ Milestone</span>
+      </div>
+      <div class="g card" style="border-left:3px solid var(--em);padding:14px">
+        <div class="tag em" style="font-size:11px">OPERATOR 02</div>
+        <b style="font-size:15px;color:#fff">Malik Mohammed</b>
+        <span>Warfare Evolution &amp; Crossplay</span>
+      </div>
+      <div class="g card" style="border-left:3px solid var(--cy);padding:14px">
+        <div class="tag cy" style="font-size:11px">OPERATOR 03</div>
+        <b style="font-size:15px;color:#fff">Mohamed Ghazi</b>
+        <span>Three Pillars &amp; 100M+ Warzone</span>
+      </div>
+      <div class="g card" style="border-left:3px solid var(--vi);padding:14px">
+        <div class="tag vi" style="font-size:11px">OPERATOR 04</div>
+        <b style="font-size:15px;color:#fff">Ziad Allahmade</b>
+        <span>Community, 4 Majors &amp; CDL</span>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-700/60">
+      <div class="tag em flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>TASK FORCE SHOWCASE COMPLETE // THANK YOU FOR YOUR TIME &amp; ATTENTION</span>
+      </div>
+      <button class="nb" onclick="cur=0;render(true);" style="border-color:var(--amb);color:var(--amb)">
+        ↺ [RESTART FROM SLIDE 01]
+      </button>
+    </div>
+  </div>`
+};
+
+let bgFlip = 0, curBg = "";
+function setBg(url) {
+  if (url === curBg) return;
+  curBg = url;
+  const a = $("bg"), b = $("bgB"), n = bgFlip ? a : b, o = bgFlip ? b : a;
+  bgFlip ^= 1;
+  n.style.backgroundImage = `linear-gradient(90deg, rgba(4,8,18,.97) 30%, rgba(4,8,18,.72) 100%), url(${url})`;
+  n.style.opacity = 0.9;
+  o.style.opacity = 0;
+}
+
+function dossier(user) {
+  const e = ERAS[era];
+  $("dos").innerHTML = `<div class="yr">${e.y}</div><div><div class="tag cy">INTEL FILE // ${e.t.toUpperCase()}</div><h3>${e.t}</h3><p>${e.x}</p></div>`;
+  setBg(e.img);
+  showIntel(e.img, e.t.toUpperCase() + " // " + e.y);
+  document.querySelectorAll(".tab").forEach((b, i) => b.classList.toggle("on", i === era));
+  $("scr").textContent = "\"" + e.sc + "\"";
+}
+
+function paintQuiz() {
+  const q = $("quiz");
+  if (!q) return;
+  const bd = `<div class="bd">${KS.map((k, i) => `<div class="${qi > i ? "lit" : ""}">${k}</div>`).join("")}</div>`;
+  if (qi >= 4) {
+    q.innerHTML = `${bd}<div class="tag em">KILLSTREAK COMPLETE // ALL INTEL VERIFIED ✓</div>
+    <p style="font-size:16px;font-weight:700;margin:10px 0;color:#fff">All 4 topics verified! Click below to proceed to the dedicated finale slide.</p>
+    <button class="nb" onclick="go(1)" style="border-color:var(--em);color:var(--em);width:100%;padding:10px">
+      PROCEED TO SLIDE 25 (FINAL DEBRIEF) →
+    </button>
+    <button class="b" onclick="resetQuiz()" style="margin-top:8px;width:100%">↺ REPLAY QUESTIONS</button>`;
+    return;
+  }
+  const Q = QZ[qi];
+  q.innerHTML = `${bd}<div class="tag amb">KILLSTREAK ${qi + 1}/4 // ${Q.w.toUpperCase()}</div><p>${Q.q}</p>${Q.o.map((o, i) => `<button class="op" data-ans="${i}">${o}</button>`).join("")}`;
+}
+
+function resetQuiz() {
+  qEp++; qi = 0; isAnswering = false;
+  paintQuiz();
+}
+
+const CAP = {
+  wwii: "WWII SQUAD COMBAT",
+  price: "CAPT. JOHN PRICE // TASK FORCE 141",
+  ghost: "SIMON 'GHOST' RILEY // TASK FORCE 141",
+  blackops: "BLACK OPS // FUTURE COMBAT",
+  warzone: "WARZONE // VERDANSK",
+  zombies: "CO-OP ZOMBIES",
+  cdl: "CDL // CHAMPIONSHIP STAGE"
+};
+
+const ROLE = {
+  "Turki Allahyani": "Origins & History // Introduction + Conclusion",
+  "Malik Mohammed": "Evolution of Warfare",
+  "Mohamed Ghazi": "Modes & Ecosystem",
+  "Ziad Allahmade": "Community & Esports"
+};
+
+const TILT = [
+  "perspective(1100px) rotateY(-7deg)",
+  "perspective(1100px) rotateY(-4deg) translateY(-4px)",
+  "perspective(1100px) rotateY(-8deg) translateY(4px)",
+  "perspective(1100px) rotateY(-5deg)"
+];
+
+function showIntel(url, cap) {
+  const im = $("intelImg");
+  $("icap").textContent = "INTEL FEED // " + cap;
+  if (im.getAttribute("src") === url) return;
+  im.style.opacity = 0;
+  im.style.display = "block";
+  im.onload = () => { im.style.opacity = 1; };
+  im.onerror = () => { im.style.display = "none"; $("icap").textContent += " // SIGNAL LOST"; };
+  im.src = url;
+}
+
+function setIntel(s) {
+  const isQa = s.layoutType === "qa";
+  const isTeam = s.layoutType === "team";
+  const isFinale = s.layoutType === "finale";
+  const st = $("intel");
+  st.style.display = (isQa || isTeam || isFinale) ? "none" : "block";
+  if (isQa || isTeam || isFinale) return;
+
+  st.style.transform = TILT[cur % 4];
+  if (s.layoutType !== "dossier") {
+    const k = Object.keys(IMG).find(k => IMG[k] === s.image);
+    showIntel(s.image, CAP[k] || "TACTICAL ASSET");
+  }
+  $("pname").textContent = "OPERATOR // " + s.presenter.toUpperCase();
+  $("prole").textContent = ROLE[s.presenter] || "";
+}
+
+function render(anim) {
+  const s = SLIDES[cur], sl = $("slide");
+  if (s.layoutType === "dossier") era = 0;
+  sl.className = "slide";
+  sl.innerHTML = L[s.layoutType](s);
+  void sl.offsetWidth;
+  sl.classList.add("in");
+  setBg(s.image);
+  setIntel(s);
+
+  $("pres").textContent = "PRESENTER: " + s.presenter.toUpperCase();
+  $("scr").textContent = "\"" + s.prompterScript + "\"";
+  $("cnt").textContent = String(cur + 1).padStart(2, "0") + " / 25";
+  $("prog").style.width = ((cur + 1) / 25 * 100) + "%";
+
+  if (s.layoutType === "dossier") dossier();
+  if (s.layoutType === "qa") resetQuiz();
+
+  animateCounters();
+
+  document.querySelectorAll(".ix").forEach((b, i) => b.classList.toggle("cur", i === cur));
+  if (anim) { play("click"); play("whoosh"); }
+}
+
+function go(d) {
+  if ($("idx").classList.contains("open")) return;
+  const n = Math.max(0, Math.min(24, cur + d));
+  if (n !== cur) { cur = n; render(true); }
+}
+
+function toggleScriptDrawer(force) {
+  scriptOpen = force !== undefined ? force : !scriptOpen;
+  const drawer = $("scriptDrawer");
+  const chevron = $("chevronScript");
+  if (drawer) {
+    if (scriptOpen) {
+      drawer.classList.add("open");
+      if (chevron) chevron.style.transform = "rotate(180deg)";
+    } else {
+      drawer.classList.remove("open");
+      if (chevron) chevron.style.transform = "rotate(0deg)";
+    }
+  }
+  play("click");
+  fit();
+}
+
+let nvgToastTimeout;
+function nvg() {
+  const on = document.body.classList.toggle("nvg");
+  $("bNvg").classList.toggle("on", on);
+  play("nvg");
+
+  const toast = $("nvgToast");
+  const toastText = $("nvgToastText");
+  if (on && toast && toastText) {
+    const s = SLIDES[cur];
+    const isPrice = s.id === 8 || s.id === 9 || (s.title && s.title.includes("Modern Warfare"));
+    if (isPrice) {
+      toastText.textContent = "[HUD // OPTICS ACTIVE] SIMULATING CAPT. PRICE'S NIGHT-VISION PERSPECTIVE (BRAVO SIX, GOING DARK)";
+    } else {
+      toastText.textContent = "[HUD TELEMETRY // GEN-3 PHOSPHOR OPTICS ENGAGED]";
+    }
+    clearTimeout(nvgToastTimeout);
+    toast.classList.add("show");
+    nvgToastTimeout = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 4200);
+  } else if (toast) {
+    toast.classList.remove("show");
+  }
+}
+
+function idx(o) {
+  $("idx").classList.toggle("open", o);
+  if (o) play("click");
+}
+
+$("bPrev").onclick = e => { e.target.blur(); go(-1); };
+$("bNext").onclick = e => { e.target.blur(); go(1); };
+$("bNvg").onclick = e => { e.target.blur(); nvg(); };
+$("bIdx").onclick = e => { e.target.blur(); idx(true); };
+$("toggleScriptBtn").onclick = e => { e.target.blur(); toggleScriptDrawer(); };
+$("bSfx").onclick = e => {
+  sfx = !sfx;
+  e.target.textContent = "SFX: " + (sfx ? "ON" : "OFF");
+  e.target.classList.toggle("on", sfx);
+  e.target.blur();
+  if (sfx) play("click");
+};
+
+$("slide").addEventListener("click", e => {
+  const t = e.target.closest("button");
+  if (!t) return;
+  if (t.dataset.era !== undefined) {
+    era = +t.dataset.era;
+    play("click");
+    dossier(true);
+  } else if (t.dataset.ans !== undefined) {
+    if (isAnswering || qi >= 4) return;
+    isAnswering = true;
+    const mine = qi, ep = qEp;
+    if (+t.dataset.ans === QZ[mine].a) {
+      t.classList.add("ok");
+      play("hit");
+      setTimeout(() => {
+        if (ep === qEp && qi === mine) {
+          qi++;
+          paintQuiz();
+        }
+        isAnswering = false;
+      }, 380);
+    } else {
+      t.classList.add("bad");
+      t.disabled = true;
+      play("error");
+      setTimeout(() => { isAnswering = false; }, 380);
+    }
+  }
+});
+
+$("ixg").innerHTML = SLIDES.map((s, i) => 
+  `<button class="ix" data-i="${i}"><small>${String(i + 1).padStart(2, "0")} // ${s.presenter.split(" ")[0].toUpperCase()}</small>${s.title.length > 46 ? s.title.slice(0, 44) + "…" : s.title}</button>`
+).join("");
+
+$("ixg").onclick = e => {
+  const b = e.target.closest(".ix");
+  if (b) { cur = +b.dataset.i; idx(false); render(true); }
+};
+$("idx").onclick = e => { if (e.target.id === "idx") idx(false); };
+
+addEventListener("keydown", e => {
+  const k = e.key;
+  if (k === "Escape") { idx(false); return; }
+  if (k === "ArrowRight" || k === " ") { e.preventDefault(); go(1); }
+  else if (k === "ArrowLeft") { e.preventDefault(); go(-1); }
+  else if (k === "n" || k === "N") nvg();
+  else if (k === "m" || k === "M") idx(true);
+  else if (k === "p" || k === "P") toggleScriptDrawer();
+});
+
+function fit() {
+  const v = $("vp");
+  if (!v) return;
+  const k = Math.min(v.clientWidth / 1280, v.clientHeight / 720);
+  $("deck").style.transform = `translate(-50%,-50%) scale(${k})`;
+}
+addEventListener("resize", fit);
+fit();
+
+(function() {
+  const c = $("embers"), x = c.getContext("2d");
+  if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const P = Array.from({ length: 55 }, () => ({
+    x: Math.random() * 1280,
+    y: Math.random() * 720,
+    r: Math.random() * 2 + 0.6,
+    v: Math.random() * 0.5 + 0.2,
+    d: Math.random() * 6
+  }));
+  (function f() {
+    x.clearRect(0, 0, 1280, 720);
+    for (const p of P) {
+      p.y -= p.v;
+      p.d += 0.02;
+      p.x += Math.sin(p.d) * 0.4;
+      if (p.y < -5) { p.y = 725; p.x = Math.random() * 1280; }
+      x.beginPath();
+      x.arc(p.x, p.y, p.r, 0, 6.283);
+      x.fillStyle = `rgba(255, ${100 + p.r * 30 | 0}, 40, ${0.25 + p.r * 0.15})`;
+      x.fill();
+    }
+    requestAnimationFrame(f);
+  })();
+})();
+
+render(false);
+</script>
+</body>
+</html>

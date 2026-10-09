@@ -1,0 +1,2430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Force Showcase: The Evolution of Call of Duty</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter, Orbitron & Share Tech Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tactical: {
+              bg: '#050810',
+              surface: '#0b1120',
+              panel: '#111b33',
+              border: '#1b2a4a',
+              cyan: '#00f0ff',
+              amber: '#ff7700',
+              emerald: '#10b981',
+              muted: '#7a8ba9',
+              platinum: '#e2e8f0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Orbitron', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @keyframes gridShift {
+      0% { background-position: 0 0; }
+      100% { background-position: 50px 50px; }
+    }
+    .tactical-grid {
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+      animation: gridShift 8s linear infinite;
+    }
+    
+    @keyframes scanBeam {
+      0% { top: -10%; opacity: 0; }
+      15% { opacity: 0.8; }
+      85% { opacity: 0.8; }
+      100% { top: 110%; opacity: 0; }
+    }
+    .laser-scanbeam {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 5%, rgba(0, 240, 255, 0.85) 50%, transparent 95%);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 0 30px rgba(0, 240, 255, 0.5);
+      pointer-events: none;
+      z-index: 1;
+      animation: scanBeam 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    .glow-orb-cyan {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      top: -100px;
+      left: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-orb-amber {
+      position: fixed;
+      width: 450px;
+      height: 450px;
+      bottom: -100px;
+      right: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 119, 0, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Tactical HUD Corner Brackets */
+    .tactical-border { position: relative; }
+    .tactical-border::before, .tactical-border::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: #00f0ff;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .tactical-border::before {
+      top: -2px;
+      left: -2px;
+      border-top: 2px solid #00f0ff;
+      border-left: 2px solid #00f0ff;
+    }
+    .tactical-border::after {
+      bottom: -2px;
+      right: -2px;
+      border-bottom: 2px solid #00f0ff;
+      border-right: 2px solid #00f0ff;
+    }
+
+    .amber-bracket::before, .amber-bracket::after { border-color: #ff7700 !important; }
+    .nvg-bracket::before, .nvg-bracket::after { border-color: #10b981 !important; }
+    .biohazard-bracket::before, .biohazard-bracket::after { border-color: #ef4444 !important; }
+    .violet-bracket::before, .violet-bracket::after { border-color: #a855f7 !important; }
+
+    .glass-card {
+      background: rgba(11, 17, 32, 0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 240, 255, 0.22);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+    }
+
+    .static-img {
+      transform: none !important;
+      animation: none !important;
+      transition: none !important;
+      filter: contrast(1.05) brightness(0.95);
+    }
+
+    @keyframes cyberStripes {
+      0% { background-position: 0 0; }
+      100% { background-position: 30px 0; }
+    }
+    .cyber-bar {
+      background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 20px 20px;
+      animation: cyberStripes 1.2s linear infinite;
+    }
+
+    @keyframes statGlow {
+      0%, 100% { filter: drop-shadow(0 0 14px rgba(255, 119, 0, 0.5)); }
+      50% { filter: drop-shadow(0 0 26px rgba(255, 119, 0, 0.85)); }
+    }
+    .glow-stat { animation: statGlow 2.5s ease-in-out infinite; }
+
+    .scanlines-overlay {
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 240, 255, 0.025) 3px,
+        rgba(0, 240, 255, 0.025) 4px
+      );
+    }
+
+    .slide-enter {
+      opacity: 0;
+      transform: scale(0.98) translateY(8px);
+      filter: blur(4px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+    }
+
+    @keyframes shakeBtn {
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+    .shake-error { animation: shakeBtn 0.3s ease-in-out; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #050810; }
+    ::-webkit-scrollbar-thumb { background: #1b2a4a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+  </style>
+</head>
+
+<body class="bg-tactical-bg text-tactical-platinum font-sans selection:bg-tactical-cyan selection:text-black overflow-x-hidden min-h-screen flex flex-col justify-between tactical-grid relative select-none">
+
+  <!-- Atmospheric Light Orbs & Laser Scanbeam -->
+  <div class="glow-orb-cyan"></div>
+  <div class="glow-orb-amber"></div>
+  <div class="laser-scanbeam"></div>
+
+  <!-- Radar Canvas Background & Scanlines -->
+  <canvas id="radarCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
+  <div class="fixed inset-0 pointer-events-none z-0 scanlines-overlay"></div>
+
+  <!-- TOP HUD BAR: MISSION CONTROL & TELEMETRY -->
+  <header class="relative z-20 border-b border-tactical-border/80 bg-tactical-surface/90 backdrop-blur px-4 py-2.5 flex items-center justify-between shadow-[0_4px_25px_rgba(0,0,0,0.6)]">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-tactical-panel border border-tactical-cyan/40">
+        <span class="w-2.5 h-2.5 rounded-full bg-tactical-cyan animate-ping"></span>
+        <span class="font-display font-black text-xs text-white tracking-widest uppercase">TASK FORCE // CDL OPS</span>
+      </div>
+      <div class="hidden md:flex flex-col text-[11px] font-mono leading-tight">
+        <span class="text-tactical-cyan font-bold" id="headerPresenter">PRESENTER: TURKI ALLAHYANI</span>
+        <span class="text-tactical-muted" id="headerTopic">TOPIC: MISSION BRIEFING</span>
+      </div>
+    </div>
+
+    <!-- Center Progress Bar -->
+    <div class="hidden lg:flex items-center gap-3 w-1/3">
+      <span class="text-[10px] font-mono text-tactical-muted whitespace-nowrap">PROGRESS</span>
+      <div class="w-full bg-tactical-bg h-2 rounded-full overflow-hidden border border-tactical-border">
+        <div id="slideProgressBar" class="h-full bg-gradient-to-r from-tactical-cyan via-cyan-400 to-tactical-amber cyber-bar transition-all duration-300" style="width: 4.16%;"></div>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-2">
+      <div class="hidden xl:flex items-center gap-1.5 px-2 py-0.5 rounded bg-tactical-bg/80 border border-tactical-border text-[10px] font-mono text-tactical-cyan">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="telemetryData">GRID: 34.05°N | 118.24°W</span>
+      </div>
+
+      <div class="px-2.5 py-1 rounded bg-cyan-950/70 border border-tactical-cyan text-tactical-cyan font-mono text-xs font-bold" id="slideCounterBadge">
+        01 / 24
+      </div>
+
+      <button id="drawerToggleBtn" title="Tactical Slide Index" class="p-1.5 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-tactical-platinum hover:text-tactical-cyan transition text-xs flex items-center gap-1 font-mono">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <span class="hidden sm:inline">ROSTER</span>
+      </button>
+
+      <button id="audioToggleBtn" title="Tactical Audio SFX" class="p-1.5 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-tactical-platinum hover:text-tactical-cyan transition text-xs flex items-center gap-1 font-mono">
+        <svg class="w-4 h-4 text-tactical-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+        </svg>
+        <span class="hidden sm:inline">SFX: ON</span>
+      </button>
+
+      <button id="fullscreenBtn" title="Toggle Fullscreen" class="p-1.5 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-tactical-platinum hover:text-tactical-cyan transition text-xs">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SLIDE VIEWPORT -->
+  <main class="relative z-10 flex-1 flex items-center justify-center p-3 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+    <div id="slideContainer" class="w-full flex items-center justify-center min-h-[520px]">
+      <!-- Slides dynamically rendered here -->
+    </div>
+  </main>
+
+  <!-- BOTTOM CONTROL & SPEAKER NOTES BAR -->
+  <footer class="relative z-20 border-t border-tactical-border bg-tactical-surface/95 backdrop-blur px-4 py-3 flex flex-col gap-2">
+    <div class="flex items-center justify-between max-w-7xl mx-auto w-full">
+      <button id="prevBtn" class="px-4 py-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-tactical-platinum hover:text-tactical-cyan transition font-mono text-xs flex items-center gap-1.5 disabled:opacity-40">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>[←] PREV</span>
+      </button>
+
+      <button id="toggleScriptBtn" class="px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-tactical-cyan/50 hover:border-tactical-cyan text-tactical-cyan font-mono text-xs flex items-center gap-2 transition shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+        <span class="w-2 h-2 rounded-full bg-tactical-amber animate-ping"></span>
+        <span id="currentPresenterBadge">PRESENTER SCRIPT</span>
+        <svg id="chevronScript" class="w-3.5 h-3.5 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <button id="nextBtn" class="px-5 py-2 rounded bg-cyan-950 border border-tactical-cyan hover:bg-tactical-cyan hover:text-black text-white font-mono text-xs font-bold transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,240,255,0.25)]">
+        <span>NEXT [→]</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Collapsible Speaker Prompter Drawer -->
+    <div id="scriptContentBox" class="hidden max-w-4xl mx-auto w-full p-3 rounded bg-tactical-panel/90 border border-tactical-cyan/40 text-xs font-sans text-tactical-platinum space-y-1">
+      <div class="flex items-center justify-between text-[10px] font-mono text-tactical-amber uppercase">
+        <span>SPEAKER PROMPTER // B1 SPOKEN ENGLISH SCRIPT</span>
+        <span class="text-emerald-400 font-bold">● AUDITORIUM MICROPHONE READY</span>
+      </div>
+      <p id="speakerScriptText" class="italic text-tactical-platinum leading-relaxed font-medium">
+        "Welcome everyone to our presentation. Today, our team will explore how Call of Duty grew from a 2003 World War II game into the world's biggest military action series."
+      </p>
+    </div>
+  </footer>
+
+  <!-- SLIDE ROSTER MODAL / QUICK-SELECT DRAWER -->
+  <div id="slideIndexModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl max-h-[85vh] bg-tactical-surface border-2 border-tactical-cyan rounded-lg tactical-border shadow-[0_0_35px_rgba(0,240,255,0.25)] flex flex-col overflow-hidden">
+      <div class="px-6 py-4 border-b border-tactical-border flex items-center justify-between bg-tactical-panel">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 bg-tactical-cyan rounded-sm animate-pulse"></span>
+          <h3 class="font-display font-bold text-lg text-white tracking-wider">TACTICAL MISSION INDEX // 24 SLIDES</h3>
+        </div>
+        <button id="closeIndexModalBtn" class="text-tactical-muted hover:text-tactical-cyan font-mono text-sm px-2.5 py-1 border border-tactical-border rounded">
+          ESC / CLOSE
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="indexGridContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const ASSETS = {
+      blackops: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/blackops.jpg",
+      cdl: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/cdl.jpg",
+      ghost: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/ghost.png",
+      price: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/price.png",
+      warzone: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/warzone.jpg",
+      wwii: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/wwii.jpg",
+      zombies: "https://raw.githubusercontent.com/SOBO-S/index-3-/refs/heads/main/zombies.jpg"
+    };
+
+    /* 4-ERA MILESTONE DOSSIER DATA */
+    const DOSSIER_DATA = [
+      {
+        y: "2003",
+        code: "INTEL FILE #01 // YEAR 2003",
+        status: "DECLASSIFIED",
+        heading: "The Initial World War II Deployment",
+        body: "Infinity Ward launches the first Call of Duty on PC. Praised for historic realism, squad AI combat, and audio fidelity, earning universal critical acclaim and establishing the franchise name.",
+        source: "Source: Activision Official Records (2003)",
+        thumb: ASSETS.wwii,
+        speakerScript: "In 2003, Infinity Ward launched the original Call of Duty on PC, establishing historic World War II squad combat."
+      },
+      {
+        y: "2007",
+        code: "INTEL FILE #02 // YEAR 2007",
+        status: "TOP PRIORITY",
+        heading: "Modern Warfare Shifts the Genre",
+        body: "Infinity Ward releases Call of Duty 4: Modern Warfare. It moved combat into the contemporary era, pioneering Create-a-Class loadouts, soldier perks, and radar/helicopter killstreaks.",
+        source: "Source: CallofDuty.com 20th Anniversary Retrospective",
+        thumb: ASSETS.price,
+        speakerScript: "In 2007, Modern Warfare revolutionized multiplayer by introducing create-a-class loadouts and killstreak rewards."
+      },
+      {
+        y: "2010",
+        code: "INTEL FILE #03 // YEAR 2010",
+        status: "CONFIDENTIAL",
+        heading: "Black Ops & Cold War Secrets",
+        body: "Treyarch launches Call of Duty: Black Ops. It became a global entertainment sensation, breaking sales records and cementing cooperative Zombies into a permanent cultural phenomenon.",
+        source: "Source: Activision Financial Announcements (2010)",
+        thumb: ASSETS.blackops,
+        speakerScript: "In 2010, Black Ops expanded the franchise with Cold War covert operations and cemented cooperative Zombies mode."
+      },
+      {
+        y: "2021",
+        code: "INTEL FILE #04 // YEAR 2021",
+        status: "HISTORIC MILESTONE",
+        heading: "The 400 Million Sales Frontier",
+        body: "Activision officially confirms the franchise has surpassed 400 million premium game units sold worldwide alongside the massive global battle royale expansion.",
+        source: "Source: CallofDuty.com (Official Announcement, April 2021)",
+        thumb: ASSETS.warzone,
+        speakerScript: "By 2021, the franchise surpassed 400 million premium games sold, and Warzone crossed 100 million active players."
+      }
+    ];
+
+    const SLIDES = [
+      /* SLIDE 1 */
+      {
+        id: 1,
+        title: "CALL OF DUTY: THE EVOLUTION OF COMBAT",
+        subtitle: "History, Technology, Game Modes & The Global Esports Era",
+        presenter: "Turki Allahyani",
+        category: "MISSION BRIEFING",
+        speakerNotes: "Welcome everyone to our presentation. Today, our team will explore how Call of Duty grew from a 2003 World War II game into the world's biggest military action series.",
+        render: () => `
+          <div class="w-full max-w-4xl text-center space-y-6 slide-enter">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-tactical-cyan/40 bg-tactical-panel/80 text-tactical-cyan text-xs font-mono tracking-widest uppercase">
+              <span class="w-2 h-2 rounded-full bg-tactical-cyan animate-ping"></span>
+              SPECIAL OPERATIONS BRIEFING // CLASSIFIED INTEL
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl font-display font-extrabold text-white tracking-wider leading-none drop-shadow-[0_0_25px_rgba(0,240,255,0.5)]">
+              CALL <span class="text-tactical-cyan">OF</span> DUTY
+            </h1>
+            <p class="text-xl sm:text-2xl font-display font-semibold text-tactical-amber tracking-widest uppercase">
+              THE EVOLUTION OF COMBAT
+            </p>
+            <p class="text-sm sm:text-base text-tactical-muted max-w-2xl mx-auto leading-relaxed">
+              A comprehensive showcase exploring 20+ years of gameplay evolution, technological leaps, multiplayer culture, and professional esports tournaments.
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 max-w-3xl mx-auto font-mono text-xs">
+              <div class="p-3.5 rounded glass-card tactical-border text-center">
+                <div class="text-tactical-cyan font-bold text-xl" data-counter="2003">0</div>
+                <div class="text-tactical-muted text-[10px] uppercase">Franchise Birth</div>
+              </div>
+              <div class="p-3.5 rounded glass-card tactical-border text-center">
+                <div class="text-tactical-amber font-bold text-xl" data-counter="400" data-suffix="M+">0M+</div>
+                <div class="text-tactical-muted text-[10px] uppercase">Games Sold</div>
+              </div>
+              <div class="p-3.5 rounded glass-card tactical-border text-center">
+                <div class="text-tactical-cyan font-bold text-xl" data-counter="100" data-suffix="M+">0M+</div>
+                <div class="text-tactical-muted text-[10px] uppercase">Warzone Recruits</div>
+              </div>
+              <div class="p-3.5 rounded glass-card tactical-border text-center">
+                <div class="text-tactical-amber font-bold text-xl">CDL</div>
+                <div class="text-tactical-muted text-[10px] uppercase">Global League</div>
+              </div>
+            </div>
+
+            <div class="pt-4">
+              <span class="inline-block text-xs font-mono text-tactical-muted animate-pulse">
+                PRESS [SPACE] OR CLICK [NEXT] TO INITIALIZE ROSTER →
+              </span>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 2 */
+      {
+        id: 2,
+        title: "TASK FORCE ROSTER & SPEAKING ROLES",
+        subtitle: "Collaborative Presentation Team Structure",
+        presenter: "Turki Allahyani",
+        category: "COMMAND ROSTER",
+        speakerNotes: "Our team has four members. Each student will present one key part of the franchise, including origins, historical evolution, game modes, and competitive esports.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-6 slide-enter">
+            <div class="text-center space-y-1">
+              <div class="text-xs font-mono text-tactical-cyan uppercase tracking-widest">DEPLOYMENT SQUAD // 4 OPERATORS</div>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">TASK FORCE PRESENTATION ROSTER</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="p-4 rounded glass-card amber-bracket tactical-border group">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-tactical-amber border border-tactical-amber/40">OPERATOR 01</span>
+                  <span class="text-xs font-mono text-tactical-amber font-bold">LEAD</span>
+                </div>
+                <div class="text-lg font-display font-bold text-white">Turki Allahyani</div>
+                <div class="text-xs font-mono text-tactical-muted mb-3">Intro & Conclusion</div>
+                <p class="text-xs text-tactical-platinum/80 leading-relaxed border-t border-tactical-border pt-2">
+                  Origins in 2003, Infinity Ward, World War II roots, and 400M+ franchise sales milestone.
+                </p>
+              </div>
+
+              <div class="p-4 rounded glass-card nvg-bracket tactical-border group">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/40">OPERATOR 02</span>
+                  <span class="text-xs font-mono text-emerald-400 font-bold">SPEAKER</span>
+                </div>
+                <div class="text-lg font-display font-bold text-white">Malik Mohammed</div>
+                <div class="text-xs font-mono text-tactical-muted mb-3">Main Idea 1</div>
+                <p class="text-xs text-tactical-platinum/80 leading-relaxed border-t border-tactical-border pt-2">
+                  Evolution of warfare: WWII to Modern Warfare, Black Ops future cybernetics, and crossplay.
+                </p>
+              </div>
+
+              <div class="p-4 rounded glass-card tactical-border group">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-tactical-cyan border border-tactical-cyan/40">OPERATOR 03</span>
+                  <span class="text-xs font-mono text-tactical-cyan font-bold">SPEAKER</span>
+                </div>
+                <div class="text-lg font-display font-bold text-white">Mohamed Ghazi</div>
+                <div class="text-xs font-mono text-tactical-muted mb-3">Main Idea 2</div>
+                <p class="text-xs text-tactical-platinum/80 leading-relaxed border-t border-tactical-border pt-2">
+                  The Three Pillars: Campaign, Multiplayer, Zombies, and the 100M+ Warzone battle royale phenomenon.
+                </p>
+              </div>
+
+              <div class="p-4 rounded glass-card violet-bracket tactical-border group">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-500/40">OPERATOR 04</span>
+                  <span class="text-xs font-mono text-purple-400 font-bold">SPEAKER</span>
+                </div>
+                <div class="text-lg font-display font-bold text-white">Ziad Allahmade</div>
+                <div class="text-xs font-mono text-tactical-muted mb-3">Main Idea 3</div>
+                <p class="text-xs text-tactical-platinum/80 leading-relaxed border-t border-tactical-border pt-2">
+                  Global esports & CDL: 2020 League launch, 2024 stadium majors, and YouTube tournament streaming.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded bg-tactical-surface/60 border border-tactical-border text-center text-xs font-mono text-tactical-muted">
+              ESTIMATED MISSION DURATION: 10–12 MINUTES • FORMAT: B1 ENGLISH SPOKEN SHOWCASE
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 3 */
+      {
+        id: 3,
+        title: "SECTION 1: THE ORIGINS OF CALL OF DUTY",
+        subtitle: "Presented by Turki Allahyani",
+        presenter: "Turki Allahyani",
+        category: "SECTION BRIEFING",
+        speakerNotes: "Let me start with the origins of Call of Duty. The series began with a studio called Infinity Ward, and it used World War II as its first setting.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-tactical-amber/40 bg-tactical-panel/80 text-tactical-amber text-xs font-mono tracking-widest uppercase">
+                <span class="w-2 h-2 rounded-full bg-tactical-amber animate-pulse"></span>
+                SECTION BRIEFING 01 // TURKI ALLAHYANI
+              </div>
+              <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white leading-tight">
+                THE BIRTH OF A LEGEND <span class="text-tactical-amber">(2003)</span>
+              </h2>
+              <p class="text-base text-tactical-amber font-mono">From Normandy Trenches to Global Blockbuster</p>
+              
+              <div class="p-4 rounded glass-card border-l-4 border-tactical-amber text-sm text-tactical-platinum leading-relaxed">
+                "Call of Duty grew from a World War II game into a large game series with many different settings."
+                <div class="text-xs font-mono text-tactical-amber mt-2">— Turki Allahyani's Core Thesis</div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden amber-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(255,119,0,0.25)]">
+                <div class="overflow-hidden rounded h-64 sm:h-72 bg-tactical-bg relative">
+                  <img src="${ASSETS.wwii}" alt="Call of Duty WWII Squad" class="w-full h-full object-cover static-img">
+                  <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-tactical-amber">
+                    <span class="font-bold">ARCHIVE: 1944 ARDENNES</span>
+                    <span class="text-[10px] bg-amber-950/90 px-2 py-0.5 rounded text-tactical-amber border border-tactical-amber/40">NORMANDY SECTOR</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 4 */
+      {
+        id: 4,
+        title: "OCTOBER 29, 2003: THE FIRST DEPLOYMENT",
+        subtitle: "Infinity Ward and the Historic PC Debut",
+        presenter: "Turki Allahyani",
+        category: "HISTORICAL ARCHIVE",
+        speakerNotes: "The first Call of Duty came out on October 29, 2003. It was made by Infinity Ward and released on PC. This was the first step of a very long journey.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono bg-amber-950 text-tactical-amber border border-tactical-amber/30">
+                OCTOBER 29, 2003 // PC PLATFORM
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                A NEW BENCHMARK FOR WAR GAMES
+              </h2>
+              <ul class="space-y-3 text-xs sm:text-sm text-tactical-platinum">
+                <li class="flex items-start gap-2">
+                  <span class="text-tactical-amber font-mono font-bold">›</span>
+                  <span><strong>Developed by Infinity Ward:</strong> Created by 22 industry veterans who designed cinematic, intense frontline combat.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-tactical-amber font-mono font-bold">›</span>
+                  <span><strong>World War II Setting:</strong> Covered the European theater with authentic weapons, tanks, and paratrooper landings.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-tactical-amber font-mono font-bold">›</span>
+                  <span><strong>Three Allied Perspectives:</strong> Players fought as American, British, and Soviet soldiers during historic battles.</span>
+                </li>
+              </ul>
+              <div class="p-2.5 rounded bg-tactical-panel/80 border-l-2 border-tactical-amber text-xs font-mono text-tactical-muted">
+                SOURCE: CallofDuty.com (20th Anniversary, 2023) & Activision Official Archives (2003)
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-3">
+              <div class="relative rounded-lg overflow-hidden amber-bracket tactical-border glass-card p-1">
+                <div class="h-64 sm:h-72 overflow-hidden bg-tactical-bg rounded relative">
+                  <img src="${ASSETS.wwii}" alt="Allied Soldiers in WWII" class="w-full h-full object-cover static-img">
+                  <div class="absolute bottom-2 left-2 right-2 text-[10px] font-mono bg-tactical-bg/85 px-2 py-1 rounded border border-tactical-border text-tactical-amber">
+                    INTEL DOSSIER: THE ALLIED FRONT (2003)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 5 */
+      {
+        id: 5,
+        title: "CINEMATIC SQUAD WARFARE",
+        subtitle: "Why the First Game Changed the Industry",
+        presenter: "Turki Allahyani",
+        category: "GAMEPLAY REVOLUTION",
+        speakerNotes: "The first game did something new. Players saw the war from three Allied sides: American, British, and Soviet. They also felt like part of a squad, and the shell-shock effect made explosions feel real.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-3">
+              <div class="space-y-1">
+                <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">TACTICAL INNOVATIONS (2003)</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">BREAKING THE 'LONE WOLF' FORMULA</h2>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">01</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Squad AI Companions</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Unlike older shooters, Call of Duty gave you an entire squad that advanced, called out targets, and pushed frontlines together.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">02</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Shell Shock Effect</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Nearby explosions produced blurred vision, ringing ears, and disorientation, bringing unprecedented battlefield realism.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">03</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Iron Sights Aiming</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Raising weapons to look directly down realistic iron sights (ADS) set the universal standard for all modern FPS games.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden amber-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(255,119,0,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg">
+                  <img src="${ASSETS.wwii}" alt="Squad AI Movement" class="w-full h-full object-cover object-center static-img">
+                </div>
+              </div>
+              <div class="p-2 rounded bg-tactical-panel/80 border border-tactical-border text-center text-[10px] font-mono text-tactical-muted">
+                AWARD: 2004 Game Developers Choice "Game of the Year"
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 6 */
+      {
+        id: 6,
+        title: "TACTICAL INTEL: KEY FRANCHISE MILESTONES",
+        subtitle: "Click each era tab to unlock classified dossier and update speech script",
+        presenter: "Turki Allahyani",
+        category: "INTERACTIVE DOSSIER",
+        speakerNotes: "In 2003, Infinity Ward launched the original Call of Duty on PC, establishing historic World War II squad combat.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-4 slide-enter">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">[CLICK TO REVEAL TACTICAL DOSSIER]</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">THE MILESTONE EXPANSION</h2>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2 font-mono text-xs">
+              <button onclick="window.switchDossier(0)" id="dossierTab0" class="px-4 py-2 rounded bg-amber-950 border border-tactical-amber text-tactical-amber font-bold transition shadow-[0_0_10px_rgba(255,119,0,0.3)]">2003: WWII ROOTS</button>
+              <button onclick="window.switchDossier(1)" id="dossierTab1" class="px-4 py-2 rounded bg-tactical-panel border border-tactical-border text-tactical-platinum hover:border-tactical-amber transition">2007: MODERN WARFARE</button>
+              <button onclick="window.switchDossier(2)" id="dossierTab2" class="px-4 py-2 rounded bg-tactical-panel border border-tactical-border text-tactical-platinum hover:border-tactical-amber transition">2010: BLACK OPS</button>
+              <button onclick="window.switchDossier(3)" id="dossierTab3" class="px-4 py-2 rounded bg-tactical-panel border border-tactical-border text-tactical-platinum hover:border-tactical-amber transition">2021: 400M RECORD</button>
+            </div>
+
+            <div id="dossierContentBox" class="p-5 rounded glass-card amber-bracket tactical-border min-h-[220px] grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+              <div class="md:col-span-8 flex flex-col justify-center">
+                <div class="flex items-center justify-between border-b border-tactical-border pb-2 mb-3">
+                  <span class="text-xs font-mono text-tactical-amber" id="dossierCode">INTEL FILE #01 // YEAR 2003</span>
+                  <span class="text-xs font-mono text-tactical-cyan" id="dossierStatus">STATUS: DECLASSIFIED</span>
+                </div>
+                <h3 class="text-lg sm:text-xl font-display font-bold text-white mb-2" id="dossierHeading">The Initial World War II Deployment</h3>
+                <p class="text-xs sm:text-sm text-tactical-platinum leading-relaxed" id="dossierBody">
+                  Infinity Ward launches the first Call of Duty on PC. Praised for historic realism, squad AI combat, and audio fidelity, earning universal critical acclaim and establishing the franchise name.
+                </p>
+                <div class="mt-3 pt-2 border-t border-tactical-border/60 text-xs font-mono text-tactical-muted" id="dossierSource">
+                  Source: Activision Official Records (2003)
+                </div>
+              </div>
+              <div class="md:col-span-4 rounded overflow-hidden border border-tactical-amber/30 h-36 bg-tactical-bg">
+                <img id="dossierThumb" src="${ASSETS.wwii}" alt="WWII Intel Archive" class="w-full h-full object-cover static-img">
+              </div>
+            </div>
+
+            <div class="text-center text-xs font-mono text-tactical-muted">
+              Interactive Component: Click tabs above to inspect milestones and synchronize speech script below.
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 7: 400M SALES (Updated with transition: Turki to Malik) */
+      {
+        id: 7,
+        title: "DATA INTEL: 400 MILLION GAMES SOLD",
+        subtitle: "Turki Allahyani's Verified Franchise Growth Metric",
+        presenter: "Turki Allahyani",
+        category: "DATA INTELLIGENCE",
+        speakerNotes: "That initial deployment in 2003 laid the groundwork for everything that followed. Malik is now going to explain how the gameplay and settings evolved over time.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-5 slide-enter">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">OFFICIAL ACTIVISION SALES ARCHIVE</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">FRANCHISE SALES RECORD</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+              <div class="md:col-span-7 p-6 rounded glass-card amber-bracket tactical-border flex flex-col justify-between relative overflow-hidden">
+                <img src="${ASSETS.wwii}" alt="WWII Legacy" class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none static-img">
+                <div class="relative z-10 flex items-center justify-between">
+                  <span class="text-xs font-mono text-tactical-amber font-bold">GLOBAL PREMIUM COPIES SOLD</span>
+                  <span class="text-xs font-mono text-tactical-cyan">RECORD VERIFIED</span>
+                </div>
+                <div class="relative z-10 py-5 text-center">
+                  <div class="text-6xl sm:text-7xl font-display font-extrabold text-tactical-amber glow-stat" data-counter="400" data-suffix="M+">
+                    0M+
+                  </div>
+                  <div class="text-xs font-mono text-tactical-platinum uppercase tracking-wider mt-2">
+                    LIFETIME COPIES SOLD WORLDWIDE (APRIL 2021)
+                  </div>
+                </div>
+                <div class="relative z-10 text-xs font-mono text-tactical-muted border-t border-tactical-border pt-2">
+                  OFFICIAL SOURCE: CallofDuty.com (Franchise Celebration Announcement, April 2021)
+                </div>
+              </div>
+
+              <div class="md:col-span-5 space-y-3 flex flex-col justify-between">
+                <div class="p-3.5 rounded glass-card amber-bracket tactical-border hover:border-tactical-amber transition">
+                  <div class="text-xs font-mono text-tactical-amber font-bold">GLOBAL RANKING</div>
+                  <div class="text-lg font-display font-bold text-white">Top 3 All-Time</div>
+                  <div class="text-xs text-tactical-muted">Alongside Mario and Tetris in worldwide video game history.</div>
+                </div>
+
+                <div class="p-3.5 rounded glass-card amber-bracket tactical-border hover:border-tactical-amber transition">
+                  <div class="text-xs font-mono text-tactical-amber font-bold">ANNUAL CYCLE</div>
+                  <div class="text-lg font-display font-bold text-white" data-counter="20" data-suffix="+ Years">0+ Years</div>
+                  <div class="text-xs text-tactical-muted">A new mainline release delivered consistently every autumn.</div>
+                </div>
+
+                <div class="p-3.5 rounded glass-card amber-bracket tactical-border hover:border-tactical-amber transition">
+                  <div class="text-xs font-mono text-tactical-amber font-bold">ACTIVE PLAYERS</div>
+                  <div class="text-lg font-display font-bold text-white">Millions Daily</div>
+                  <div class="text-xs text-tactical-muted">Spanning consoles, PC, and mobile in 190 countries.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded bg-tactical-panel/80 border border-tactical-amber/40 flex items-center justify-between text-xs font-mono">
+              <span class="text-tactical-amber">OPERATOR 01 INTEL COMPLETED</span>
+              <span class="text-emerald-400 font-bold">PASSING MIC TO MALIK MOHAMMED [→]</span>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 8 */
+      {
+        id: 8,
+        title: "SECTION 2: THE EVOLUTION OF WARFARE",
+        subtitle: "Presented by Malik Mohammed",
+        presenter: "Malik Mohammed",
+        category: "OPERATOR RELAY",
+        speakerNotes: "Thank you, Turki. My name is Malik, and I will talk about how the series changed over time. It moved from World War II to modern and then future settings.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="p-3 rounded bg-emerald-950/70 border border-emerald-500 text-xs font-mono text-emerald-400 flex items-center justify-between">
+                <span>TACTICAL MIC HANDOFF: TURKI → MALIK</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              </div>
+
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/40 bg-tactical-panel/80 text-emerald-400 text-xs font-mono tracking-widest uppercase">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                SECTION BRIEFING 02 // MALIK MOHAMMED
+              </div>
+              <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white leading-tight">
+                THE EVOLUTION OF WARFARE
+              </h2>
+              <p class="text-base text-emerald-400 font-mono">From Normandy Trenches to Night-Vision Covert Ops</p>
+
+              <div class="p-4 rounded glass-card border-l-4 border-emerald-500 text-sm text-tactical-platinum leading-relaxed">
+                "The Call of Duty series changed its settings and gameplay to give players new experiences."
+                <div class="text-xs font-mono text-emerald-400 mt-2">— Malik Mohammed's Core Thesis</div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden nvg-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(34,197,94,0.3)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg relative">
+                  <img src="${ASSETS.price}" alt="Captain John Price" class="w-full h-full object-cover object-top static-img">
+                  <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-emerald-400">
+                    <span class="font-bold flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                      OPERATOR: CPT. PRICE
+                    </span>
+                    <span class="text-[10px] bg-emerald-950/90 px-2 py-0.5 rounded text-emerald-300 border border-emerald-500/50">TASK FORCE 141</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 9 */
+      {
+        id: 9,
+        title: "THE REVOLUTION: CALL OF DUTY 4 (2007)",
+        subtitle: "Moving from Historical Trenches to Contemporary Battles",
+        presenter: "Malik Mohammed",
+        category: "ERA TRANSITION",
+        speakerNotes: "In 2007, Modern Warfare brought modern combat to the series. Players could build their own class, and killstreaks gave extra rewards for good play.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-500/40">
+                TRANSFORMATION // 2007 MILESTONE
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                MODERN WARFARE REDEFINED GAMING
+              </h2>
+              <ul class="space-y-2.5 text-xs sm:text-sm text-tactical-platinum">
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-mono font-bold">›</span>
+                  <span><strong>Contemporary Combat:</strong> Replaced vintage bolt-action rifles with modern assault weapons, night vision, and laser sights.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-mono font-bold">›</span>
+                  <span><strong>Create-a-Class & Perks:</strong> Allowed players to customize personal weapons and soldier abilities for the first time.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-mono font-bold">›</span>
+                  <span><strong>Killstreak Rewards:</strong> Rewarded consecutive kills with UAV radar, airstrikes, and attack helicopter support.</span>
+                </li>
+              </ul>
+              <div class="p-2.5 rounded bg-tactical-panel/80 border-l-2 border-emerald-400 text-xs font-mono text-tactical-muted">
+                SOURCE: CallofDuty.com (Modern Warfare Historical Impact, 2023)
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-3">
+              <div class="rounded-lg overflow-hidden border border-emerald-500/40 nvg-bracket tactical-border glass-card p-1">
+                <div class="h-64 sm:h-72 overflow-hidden bg-tactical-bg rounded relative">
+                  <img src="${ASSETS.price}" alt="Captain Price Modern Warfare" class="w-full h-full object-cover object-top static-img">
+                  <div class="absolute bottom-2 left-2 right-2 text-center text-[10px] font-mono bg-tactical-bg/85 px-2.5 py-1 rounded border border-emerald-500/40 text-emerald-400 font-bold">
+                    MODERN ERA: CONTEMPORARY SPECIAL OPERATIONS
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 10 */
+      {
+        id: 10,
+        title: "THE FUTURE ERA: CYBERNETICS & THRUST JUMPS",
+        subtitle: "Advanced Warfare, Black Ops III & Futuristic Mobility",
+        presenter: "Malik Mohammed",
+        category: "FUTURISTIC ERA",
+        speakerNotes: "Later, Black Ops III moved the series into the future. Players used thrust jumps and wall-running, and each specialist had a special power.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-3">
+              <div class="space-y-1">
+                <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">CYBERNETIC ENHANCEMENT ERA (2014–2016)</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">ADVANCED MOVEMENT & FUTURE SOLDIERS</h2>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">01</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Exoskeleton Suits & Thrust Jumps</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Introduced booster suits, letting soldiers double-jump into the air, dodge sideways, and slam down on enemy squads.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">02</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Wall-Running Agility</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Black Ops III perfected chain-movement. Players could wall-run across buildings while aiming down sights without breaking momentum.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">03</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Specialist Cybernetic Powers</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Soldiers selected unique Specialists with futuristic gear like the Annihilator revolver, Glitch rewind, and Gravity Spikes.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden amber-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(255,119,0,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg">
+                  <img src="${ASSETS.blackops}" alt="Black Ops III Cybernetic Soldier" class="w-full h-full object-cover object-center static-img">
+                </div>
+              </div>
+              <div class="p-2 rounded bg-tactical-panel/80 border border-tactical-border text-center text-[10px] font-mono text-tactical-muted">
+                ENGAGEMENT: Created faster, vertical athletic multiplayer matches.
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 11 */
+      {
+        id: 11,
+        title: "THE TECHNICAL LEAP: CROSSPLAY (2019)",
+        subtitle: "Uniting PlayStation, Xbox, and PC into One Ecosystem",
+        presenter: "Malik Mohammed",
+        category: "TECH REVOLUTION",
+        speakerNotes: "In 2019, Modern Warfare introduced crossplay. PlayStation, Xbox, and PC players could play together, and cross-progression kept their progress on every device.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono bg-cyan-950 text-tactical-cyan border border-tactical-cyan/30">
+                OCTOBER 2019 // MODERN WARFARE
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                BREAKING PLATFORM BARRIERS
+              </h2>
+              <ul class="space-y-3 text-xs sm:text-sm text-tactical-platinum">
+                <li class="flex items-start gap-2">
+                  <span class="text-tactical-cyan font-mono font-bold">›</span>
+                  <span><strong>Universal Crossplay:</strong> United console and PC players into one matchmaking lobby for the first time in series history.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-tactical-cyan font-mono font-bold">›</span>
+                  <span><strong>Cross-Progression:</strong> Player ranks, weapon unlocks, and battle pass rewards transferred seamlessly across all devices.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-tactical-cyan font-mono font-bold">›</span>
+                  <span><strong>Brand New Engine:</strong> Brought photogrammetry graphics, realistic ray tracing, and spatial audio to multiplayer.</span>
+                </li>
+              </ul>
+              <div class="p-2.5 rounded bg-tactical-panel/80 border-l-2 border-tactical-cyan text-xs font-mono text-tactical-muted">
+                SOURCE: Activision (Modern Warfare Technical Launch Report, 2019)
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-3">
+              <div class="relative rounded-lg overflow-hidden border border-tactical-border h-48 bg-tactical-bg">
+                <img src="${ASSETS.blackops}" alt="Connected Online Warriors" class="w-full h-full object-cover object-top static-img">
+                <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-1 left-2 text-[10px] font-mono text-tactical-cyan">NETWORKED SERVERS: GLOBAL</div>
+              </div>
+
+              <div class="p-3 rounded glass-card tactical-border text-center font-mono space-y-2">
+                <div class="grid grid-cols-3 gap-1.5 text-[11px]">
+                  <div class="p-2 bg-tactical-panel rounded border border-tactical-border text-tactical-cyan font-bold">PLAYSTATION</div>
+                  <div class="p-2 bg-tactical-panel rounded border border-tactical-border text-tactical-cyan font-bold">XBOX</div>
+                  <div class="p-2 bg-tactical-panel rounded border border-tactical-border text-tactical-cyan font-bold">PC BATTLE.NET</div>
+                </div>
+                <div class="text-[10px] text-tactical-amber font-bold">▲ UNIFIED ACTIVISION MATCHMAKING ▲</div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 12: 75M HOURS (Updated with transition: Malik to Mohamed) */
+      {
+        id: 12,
+        title: "DATA INTEL: 75 MILLION HOURS IN 3 DAYS",
+        subtitle: "Malik Mohammed's Verified Launch Metric: Black Ops III",
+        presenter: "Malik Mohammed",
+        category: "DATA INTELLIGENCE",
+        speakerNotes: "Once those modern mechanics and crossplay unified the players, the next step was variety. Mohamed will walk us through the core game modes and online ecosystem.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-5 slide-enter">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">OFFICIAL ACTIVISION LAUNCH RECORD</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">BLACK OPS III ENGAGEMENT SHOCKWAVE</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+              <div class="md:col-span-7 p-6 rounded glass-card amber-bracket tactical-border flex flex-col justify-between relative overflow-hidden">
+                <img src="${ASSETS.blackops}" alt="Black Ops III" class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none static-img">
+                <div class="relative z-10 flex items-center justify-between">
+                  <span class="text-xs font-mono text-tactical-amber font-bold">OPENING WEEKEND ONLINE ENGAGEMENT</span>
+                  <span class="text-xs font-mono text-tactical-cyan">3-DAY RECORD</span>
+                </div>
+                <div class="relative z-10 py-5 text-center">
+                  <div class="text-6xl sm:text-7xl font-display font-extrabold text-tactical-amber glow-stat" data-counter="75" data-suffix="M+">
+                    0M+
+                  </div>
+                  <div class="text-xs font-mono text-tactical-platinum uppercase tracking-wider mt-2">
+                    HOURS PLAYED ONLINE IN FIRST 72 HOURS
+                  </div>
+                </div>
+                <div class="relative z-10 text-xs font-mono text-tactical-muted border-t border-tactical-border pt-2">
+                  OFFICIAL SOURCE: Activision Financial & Engagement Release (November 2015)
+                </div>
+              </div>
+
+              <div class="md:col-span-5 space-y-3 flex flex-col justify-between">
+                <div class="p-3.5 rounded glass-card tactical-border hover:border-tactical-cyan transition">
+                  <div class="text-xs font-mono text-tactical-cyan">OPENING REVENUE</div>
+                  <div class="text-lg font-display font-bold text-white" data-counter="550" data-prefix="$" data-suffix="M+">$0M+</div>
+                  <div class="text-xs text-tactical-muted">Biggest entertainment opening of the entire year 2015.</div>
+                </div>
+
+                <div class="p-3.5 rounded glass-card tactical-border hover:border-tactical-cyan transition">
+                  <div class="text-xs font-mono text-tactical-cyan">PLAYER RETENTION</div>
+                  <div class="text-lg font-display font-bold text-white">Record Time Per User</div>
+                  <div class="text-xs text-tactical-muted">Highest daily average play time per user in franchise history.</div>
+                </div>
+
+                <div class="p-3.5 rounded glass-card tactical-border hover:border-tactical-cyan transition">
+                  <div class="text-xs font-mono text-tactical-cyan">MODES INVOLVED</div>
+                  <div class="text-lg font-display font-bold text-white">Campaign, MP & Zombies</div>
+                  <div class="text-xs text-tactical-muted">All three modes featured full 4-player online cooperative play.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded bg-tactical-panel/80 border border-emerald-500/40 flex items-center justify-between text-xs font-mono">
+              <span class="text-emerald-400">OPERATOR 02 INTEL COMPLETED</span>
+              <span class="text-tactical-cyan font-bold">PASSING MIC TO MOHAMED GHAZI [→]</span>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 13 */
+      {
+        id: 13,
+        title: "SECTION 3: GAME MODES & ONLINE ECOSYSTEM",
+        subtitle: "Presented by Mohamed Ghazi",
+        presenter: "Mohamed Ghazi",
+        category: "OPERATOR RELAY",
+        speakerNotes: "Hello everyone. I am Mohamed. I will explain the different game modes, because Call of Duty stays popular by offering something for every type of player.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="p-3 rounded bg-cyan-950/70 border border-tactical-cyan text-xs font-mono text-tactical-cyan flex items-center justify-between">
+                <span>TACTICAL MIC HANDOFF: MALIK → MOHAMED</span>
+                <span class="w-2 h-2 rounded-full bg-tactical-cyan animate-ping"></span>
+              </div>
+
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-tactical-cyan/40 bg-tactical-panel/80 text-tactical-cyan text-xs font-mono tracking-widest uppercase">
+                <span class="w-2 h-2 rounded-full bg-tactical-cyan animate-pulse"></span>
+                SECTION BRIEFING 03 // MOHAMED GHAZI
+              </div>
+              <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white leading-tight">
+                GAME MODES & ONLINE ECOSYSTEM
+              </h2>
+              <p class="text-base text-tactical-cyan font-mono">The Three Pillars & The Warzone Disruption</p>
+
+              <div class="p-4 rounded glass-card border-l-4 border-tactical-cyan text-sm text-tactical-platinum leading-relaxed">
+                "Call of Duty stays popular by offering different game modes for different types of players."
+                <div class="text-xs font-mono text-tactical-cyan mt-2">— Mohamed Ghazi's Core Thesis</div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5">
+              <div class="relative rounded-lg overflow-hidden tactical-border glass-card p-1 shadow-[0_0_25px_rgba(0,240,255,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg relative">
+                  <img src="${ASSETS.ghost}" alt="Simon Ghost Riley" class="w-full h-full object-cover object-top static-img">
+                  <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg/95 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center text-xs font-mono text-tactical-platinum">
+                    <span class="text-tactical-cyan font-bold">OPERATOR: LT. SIMON 'GHOST' RILEY</span>
+                    <span class="text-[10px] bg-cyan-950/80 px-2 py-0.5 rounded text-tactical-cyan border border-tactical-cyan/40">SPECIAL COVERT OPS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 14 */
+      {
+        id: 14,
+        title: "THE THREE PILLARS OF CALL OF DUTY",
+        subtitle: "Campaign, Multiplayer, and Cooperative Zombies",
+        presenter: "Mohamed Ghazi",
+        category: "GAMEPLAY FRAMEWORK",
+        speakerNotes: "Call of Duty has three main pillars. Campaign gives a story for one player. Multiplayer has fast six-versus-six battles. Co-op Zombies lets friends survive together. The game WWII included all three.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-3">
+              <div class="space-y-1">
+                <span class="text-xs font-mono text-tactical-cyan uppercase tracking-widest">ECOSYSTEM FRAMEWORK</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">A COMPLETE THREE-IN-ONE PACKAGE</h2>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-cyan-950/80 border border-tactical-cyan/40 flex items-center justify-center text-tactical-cyan font-bold font-mono text-xs shrink-0">01</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Cinematic Campaign</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Story-driven military missions with Hollywood-level voice acting, moral decisions, and dramatic set-piece explosions.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/80 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">02</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Multiplayer Arena (6v6)</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Fast-paced 6v6 combat across iconic maps like Nuketown, Crash, and Terminal with customizable loadouts and killstreaks.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-cyan-950/80 border border-tactical-cyan/40 flex items-center justify-center text-tactical-cyan font-bold font-mono text-xs shrink-0">03</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Cooperative Zombies</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">4-player cooperative wave survival featuring Pack-a-Punch weapons, mystery boxes, perk sodas, and secret Easter eggs.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden tactical-border glass-card p-1 shadow-[0_0_25px_rgba(0,240,255,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg">
+                  <img src="${ASSETS.ghost}" alt="Simon Ghost Riley" class="w-full h-full object-cover object-top static-img">
+                </div>
+              </div>
+              <div class="p-2 rounded bg-tactical-panel/80 border border-tactical-border text-center text-[10px] font-mono text-tactical-muted">
+                SOURCE: CallofDuty.com (WWII Tri-Mode Architecture, 2017)
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 15 */
+      {
+        id: 15,
+        title: "CO-OP PHENOMENON: NAZI ZOMBIES",
+        subtitle: "From World at War Easter Egg to Global Cultural Craze",
+        presenter: "Mohamed Ghazi",
+        category: "CO-OP SURVIVAL",
+        speakerNotes: "Nazi Zombies started in 2008 and is still loved today. Teams survive waves of enemies and look for hidden secrets called Easter eggs.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono bg-red-950/80 text-red-400 border border-red-500/40">
+                ORIGIN // WORLD AT WAR (2008)
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                SURVIVAL TEAMWORK & EASTER EGGS
+              </h2>
+              <ul class="space-y-3 text-xs sm:text-sm text-tactical-platinum">
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400 font-mono font-bold">›</span>
+                  <span><strong>4-Player Cooperative Survival:</strong> Teams defend boarded windows, purchase Mystery Box weapons, and survive endless undead rounds.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400 font-mono font-bold">›</span>
+                  <span><strong>Perk-a-Colas & Pack-a-Punch:</strong> Classic power-ups like Juggernog, Speed Cola, and Ray Guns upgraded soldier firepower.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400 font-mono font-bold">›</span>
+                  <span><strong>Rich Multiverse Lore:</strong> Complex puzzle quests and comic-book style time-travel storylines kept millions searching for secrets.</span>
+                </li>
+              </ul>
+              <div class="p-2.5 rounded bg-tactical-panel/80 border-l-2 border-red-500 text-xs font-mono text-tactical-muted">
+                SOURCE: CallofDuty.com (Zombies Chronicles & World at War Retrospective, 2023)
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden biohazard-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(239,68,68,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg relative">
+                  <img src="${ASSETS.zombies}" alt="Call of Duty Zombies Mob" class="w-full h-full object-cover object-center static-img">
+                  <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-red-400">
+                    <span class="font-bold">OUTBREAK: DER RIESE</span>
+                    <span class="text-[10px] bg-red-950/90 px-2 py-0.5 rounded text-red-300 border border-red-500/50">GROUP 935</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 16 */
+      {
+        id: 16,
+        title: "BATTLE ROYALE REVOLUTION: WARZONE",
+        subtitle: "March 2020: The Free-to-Play Tactical Disruption",
+        presenter: "Mohamed Ghazi",
+        category: "WARZONE BRIEFING",
+        speakerNotes: "In March 2020, Warzone started a new kind of game. One hundred fifty players land in Verdansk, and only the last team wins. If you lose, the Gulag gives you a one-versus-one second chance.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-3">
+              <div class="space-y-1">
+                <span class="text-xs font-mono text-tactical-cyan uppercase tracking-widest">DEPLOYMENT: MARCH 10, 2020 // FREE-TO-PLAY</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">THE WARZONE BATTLE ROYALE FORMULA</h2>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-cyan-950/90 border border-tactical-cyan/40 flex items-center justify-center text-tactical-cyan font-bold font-mono text-xs shrink-0">01</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">150-Player Massive Infiltration</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Dropped 150 combatants simultaneously via parachute into Verdansk, combining dense city centers with military bases.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card amber-bracket tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950/90 border border-tactical-amber/40 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">02</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">The Gulag 1v1 Showdown</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">A revolutionary second-chance mechanic where eliminated players duel in prison showers for an instant redeployment.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-cyan-950/90 border border-tactical-cyan/40 flex items-center justify-center text-tactical-cyan font-bold font-mono text-xs shrink-0">03</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">In-Match Economy & Buy Stations</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Bounty contracts earned squads cash to purchase custom loadout drops, UAV radar sweeps, and squadmate redeploys.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden tactical-border glass-card p-1 shadow-[0_0_25px_rgba(0,240,255,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg relative">
+                  <img src="${ASSETS.warzone}" alt="Warzone Verdansk Infiltration" class="w-full h-full object-cover object-center static-img">
+                  <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-tactical-cyan">
+                    <span class="font-bold">DZ: VERDANSK SECTOR 04</span>
+                    <span class="text-[10px] bg-cyan-950/90 px-2 py-0.5 rounded text-tactical-cyan border border-tactical-cyan/50">150 OPERATORS</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-2 rounded bg-tactical-panel/80 border border-tactical-border text-center text-[10px] font-mono text-tactical-muted">
+                SOURCE: CallofDuty.com (Warzone Ecosystem Overview, 2020)
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 17: 100M & 500M METRICS (Updated with transition: Mohamed to Ziad) */
+      {
+        id: 17,
+        title: "DATA INTEL: 100M PLAYERS & 500M HOURS",
+        subtitle: "Mohamed Ghazi's Verified Player Scale Metrics",
+        presenter: "Mohamed Ghazi",
+        category: "DATA INTELLIGENCE",
+        speakerNotes: "With millions of players engaging across campaigns, multiplayer, and Warzone, the community naturally expanded into high-level competition. Ziad will now cover community culture and esports.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-5 slide-enter">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">OFFICIAL ACTIVISION COMMUNITY METRICS</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">MASSIVE ONLINE SCALE & ENGAGEMENT</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div class="p-6 rounded glass-card amber-bracket tactical-border flex flex-col justify-between relative overflow-hidden">
+                <img src="${ASSETS.warzone}" alt="Verdansk" class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none static-img">
+                <div class="relative z-10 flex items-center justify-between">
+                  <span class="text-xs font-mono text-tactical-amber font-bold">WARZONE REGISTERED PLAYERS</span>
+                  <span class="text-xs font-mono text-tactical-cyan">APRIL 2021</span>
+                </div>
+                <div class="relative z-10 py-5 text-center">
+                  <div class="text-5xl sm:text-6xl font-display font-extrabold text-tactical-amber glow-stat" data-counter="100" data-suffix="M+">
+                    0M+
+                  </div>
+                  <div class="text-xs font-mono text-tactical-platinum uppercase tracking-wider mt-2">
+                    ACTIVE PLAYERS WORLDWIDE
+                  </div>
+                </div>
+                <div class="relative z-10 text-xs font-mono text-tactical-muted border-t border-tactical-border pt-2">
+                  SOURCE: CallofDuty.com (Warzone 100M Milestone Announcement, 2021)
+                </div>
+              </div>
+
+              <div class="p-6 rounded glass-card tactical-border flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono text-tactical-cyan font-bold">MODERN WARFARE MULTIPLAYER</span>
+                  <span class="text-xs font-mono text-tactical-muted">COMMUNITY PLAYTIME</span>
+                </div>
+                <div class="py-5 text-center">
+                  <div class="text-5xl sm:text-6xl font-display font-extrabold text-tactical-cyan glow-stat" data-counter="500" data-suffix="M+">
+                    0M+
+                  </div>
+                  <div class="text-xs font-mono text-tactical-platinum uppercase tracking-wider mt-2">
+                    HOURS PLAYED &amp; <span data-counter="300" data-suffix="M">0M</span> MATCHES
+                  </div>
+                </div>
+                <div class="relative z-10 text-xs font-mono text-tactical-muted border-t border-tactical-border pt-2">
+                  SOURCE: Activision Financial and Player Engagement Report (2020)
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded bg-tactical-panel/80 border border-tactical-cyan/40 flex items-center justify-between text-xs font-mono">
+              <span class="text-tactical-cyan">OPERATOR 03 INTEL COMPLETED</span>
+              <span class="text-purple-400 font-bold">PASSING MIC TO ZIAD ALLAHMADE [→]</span>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 18 */
+      {
+        id: 18,
+        title: "SECTION 4: GLOBAL COMMUNITY & ESPORTS",
+        subtitle: "Presented by Ziad Allahmade",
+        presenter: "Ziad Allahmade",
+        category: "OPERATOR RELAY",
+        speakerNotes: "Thank you, Mohamed. I am Ziad. I will talk about the community and the competitive esports around Call of Duty.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="p-3 rounded bg-purple-950/70 border border-purple-500 text-xs font-mono text-purple-400 flex items-center justify-between">
+                <span>TACTICAL MIC HANDOFF: MOHAMED → ZIAD</span>
+                <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+              </div>
+
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/40 bg-tactical-panel/80 text-purple-400 text-xs font-mono tracking-widest uppercase">
+                <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                SECTION BRIEFING 04 // ZIAD ALLAHMADE
+              </div>
+              <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white leading-tight">
+                GLOBAL COMMUNITY & ESPORTS
+              </h2>
+              <p class="text-base text-purple-400 font-mono">The Call of Duty League (CDL) & Stadium Majors</p>
+
+              <div class="p-4 rounded glass-card border-l-4 border-purple-500 text-sm text-tactical-platinum leading-relaxed">
+                "Call of Duty has built a large community through online play, events, and competitive esports."
+                <div class="text-xs font-mono text-purple-400 mt-2">— Ziad Allahmade's Core Thesis</div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5">
+              <div class="relative rounded-lg overflow-hidden violet-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(168,85,247,0.3)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg relative">
+                  <img src="${ASSETS.cdl}" alt="Call of Duty League Arena" class="w-full h-full object-cover static-img">
+                  <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg/95 via-transparent to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center text-xs font-mono text-tactical-platinum">
+                    <span class="text-purple-400 font-bold">CDL CHAMPIONSHIP ARENA</span>
+                    <span class="text-[10px] bg-purple-950/80 px-2 py-0.5 rounded text-purple-300 border border-purple-500/40">LIVE STADIUM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 19 */
+      {
+        id: 19,
+        title: "THE CALL OF DUTY LEAGUE (CDL 2020)",
+        subtitle: "City-Based Franchise Professional League",
+        presenter: "Ziad Allahmade",
+        category: "COMPETITIVE ARCHITECTURE",
+        speakerNotes: "The Call of Duty League began its first season in 2020. It has twelve city-based teams that compete to become champions.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-4">
+              <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono bg-purple-950 text-purple-400 border border-purple-500/40">
+                INAUGURAL SEASON // 2020
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">
+                PROFESSIONAL FRANCHISE STRUCTURE
+              </h2>
+              <ul class="space-y-3 text-xs sm:text-sm text-tactical-platinum">
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 font-mono font-bold">›</span>
+                  <span><strong>12 Global City Teams:</strong> Representing major cities like Atlanta FaZe, OpTic Texas, Toronto Ultra, and London.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 font-mono font-bold">›</span>
+                  <span><strong>4v4 Competitive Format:</strong> Best-of-five series playing Hardpoint, Search & Destroy, and Control.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 font-mono font-bold">›</span>
+                  <span><strong>Competitive Restrictions:</strong> Banned unbalanced weapons to test pure player reflex and communication.</span>
+                </li>
+              </ul>
+              <div class="p-2.5 rounded bg-tactical-panel/80 border-l-2 border-purple-500 text-xs font-mono text-tactical-muted">
+                SOURCE: Call of Duty League Official Inaugural Season Announcement (2020)
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-3">
+              <div class="relative rounded-lg overflow-hidden border border-purple-500/40 violet-bracket tactical-border h-64 sm:h-72 bg-tactical-bg p-1">
+                <img src="${ASSETS.cdl}" alt="CDL Live Arena Event" class="w-full h-full object-cover static-img">
+                <div class="absolute inset-0 bg-gradient-to-t from-tactical-bg via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-2 left-2 text-[11px] font-mono text-purple-400 font-bold">
+                  CDL MAIN STAGE // LIVE COMPETITION
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 20 */
+      {
+        id: 20,
+        title: "2024 CDL SEASON: ARENAS & STREAMING",
+        subtitle: "Major Stadium Events and Global YouTube Broadcasts",
+        presenter: "Ziad Allahmade",
+        category: "LIVE TOURNAMENTS",
+        speakerNotes: "In 2024, the league had four major live events in big stadiums. Fans who could not attend watched on the official YouTube channel, including the Championship.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-3">
+              <div class="space-y-1">
+                <span class="text-xs font-mono text-purple-400 uppercase tracking-widest">OFFICIAL 2024 TOURNAMENT CALENDAR</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">MAJOR STADIUM ARENAS & BROADCASTS</h2>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="p-3 rounded glass-card violet-bracket tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 font-bold font-mono text-xs shrink-0">01</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">4 Major Live Events in Stadiums</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">The 2024 season featured four live Major tournaments hosted in packed basketball arenas across North America.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card violet-bracket tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 font-bold font-mono text-xs shrink-0">02</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Official YouTube Championship Broadcast</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">The 2024 Championship was broadcast live on the official Call of Duty League YouTube channel with co-streamers.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card violet-bracket tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 font-bold font-mono text-xs shrink-0">03</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Passionate Stadium Fandom</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">Franchises like OpTic Texas bring passionate fanbases known as the 'GreenWall' who create energetic arena chants.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden violet-bracket tactical-border glass-card p-1 shadow-[0_0_25px_rgba(168,85,247,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg">
+                  <img src="${ASSETS.cdl}" alt="Championship Weekend" class="w-full h-full object-cover object-center static-img">
+                </div>
+              </div>
+              <div class="p-2 rounded bg-tactical-panel/80 border border-tactical-border text-center text-[10px] font-mono text-tactical-muted">
+                SOURCE: CallofDuty.com (CDL 2024 Schedule) & CDL 2024 Rules
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 21: 4 MAJORS (Updated with transition: Ziad to Turki) */
+      {
+        id: 21,
+        title: "DATA INTEL: ESPORTS AUDIENCE & CHAMPIONSHIP",
+        subtitle: "Ziad Allahmade's Verified Competitive Metrics",
+        presenter: "Ziad Allahmade",
+        category: "DATA INTELLIGENCE",
+        speakerNotes: "From stadium arenas to global broadcasts, competitive esports proved the franchise's lasting power. Turki will now bring our research together with the final conclusions.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-5 slide-enter">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-mono text-purple-400 uppercase tracking-widest">CALL OF DUTY LEAGUE OFFICIAL DATA</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">CDL COMPETITIVE FOOTPRINT</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+              <div class="md:col-span-7 p-6 rounded glass-card violet-bracket tactical-border flex flex-col justify-between relative overflow-hidden">
+                <img src="${ASSETS.cdl}" alt="CDL Championship" class="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none static-img">
+                <div class="relative z-10 flex items-center justify-between">
+                  <span class="text-xs font-mono text-purple-400 font-bold">2024 SEASON STRUCTURE</span>
+                  <span class="text-xs font-mono text-tactical-cyan">OFFICIAL RULES CITED</span>
+                </div>
+                <div class="relative z-10 py-5 text-center">
+                  <div class="text-6xl sm:text-7xl font-display font-extrabold text-purple-400 glow-stat" data-counter="4" data-suffix=" MAJORS">
+                    0 MAJORS
+                  </div>
+                  <div class="text-xs font-mono text-tactical-platinum uppercase tracking-wider mt-2">
+                    LIVE ARENA EVENTS + CHAMPIONSHIP WEEKEND
+                  </div>
+                </div>
+                <div class="relative z-10 text-xs font-mono text-tactical-muted border-t border-tactical-border pt-2">
+                  OFFICIAL SOURCES: CallofDuty.com (2023–2024 Season) & CDL 2024 Official Rules
+                </div>
+              </div>
+
+              <div class="md:col-span-5 space-y-3 flex flex-col justify-between">
+                <div class="p-3.5 rounded glass-card tactical-border hover:border-purple-400 transition">
+                  <div class="text-xs font-mono text-purple-400 font-bold">FIRST SEASON</div>
+                  <div class="text-lg font-display font-bold text-white" data-counter="2020">0</div>
+                  <div class="text-xs text-tactical-muted">First year of franchised home/away city tournaments.</div>
+                </div>
+
+                <div class="p-3.5 rounded glass-card tactical-border hover:border-purple-400 transition">
+                  <div class="text-xs font-mono text-purple-400 font-bold">BROADCAST PLATFORM</div>
+                  <div class="text-lg font-display font-bold text-white">Official YouTube</div>
+                  <div class="text-xs text-tactical-muted">Official high-definition streaming channel for CDL matches.</div>
+                </div>
+
+                <div class="p-3.5 rounded glass-card tactical-border hover:border-purple-400 transition">
+                  <div class="text-xs font-mono text-purple-400 font-bold">ACTIVE TEAMS</div>
+                  <div class="text-lg font-display font-bold text-white" data-counter="12" data-suffix=" Pro Franchises">0 Pro Franchises</div>
+                  <div class="text-xs text-tactical-muted">48 of the most skilled tactical FPS players in the world.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded bg-tactical-panel/80 border border-purple-500/40 flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-400">OPERATOR 04 INTEL COMPLETED</span>
+              <span class="text-tactical-amber font-bold">RETURNING MIC TO TURKI ALLAHYANI [→]</span>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 22 */
+      {
+        id: 22,
+        title: "MISSION DEBRIEF: 3 CORE GROUP TAKEAWAYS",
+        subtitle: "Key Insights Synthesized by the Entire Task Force",
+        presenter: "Turki Allahyani",
+        category: "GROUP SYNTHESIS",
+        speakerNotes: "Let's bring our ideas together. We have three core takeaways: technical innovation, diverse player appeal, and thriving esports.",
+        render: () => `
+          <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center slide-enter">
+            <div class="md:col-span-7 space-y-3">
+              <div class="space-y-1">
+                <span class="text-xs font-mono text-tactical-cyan uppercase tracking-widest">TASK FORCE EXECUTIVE SUMMARY</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">THE PILLARS OF 20+ YEARS OF SUCCESS</h2>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-cyan-950 flex items-center justify-center text-tactical-cyan font-bold font-mono text-xs shrink-0">A</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Technical Innovation</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">The franchise never stayed still: crossplay, cross-progression, and realistic graphics kept the series fresh across 20+ years.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-amber-950 flex items-center justify-center text-tactical-amber font-bold font-mono text-xs shrink-0">B</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Diverse Player Appeal</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">By offering solo campaigns, 6v6 arenas, co-op Zombies, and free-to-play Warzone, the franchise fits every type of player.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border flex items-start gap-3">
+                  <div class="w-7 h-7 rounded bg-purple-950 flex items-center justify-center text-purple-400 font-bold font-mono text-xs shrink-0">C</div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-display font-bold text-white">Thriving Esports Scene</h3>
+                    <p class="text-[11px] sm:text-xs text-tactical-platinum/80 leading-relaxed">The Call of Duty League brings 12 city-based teams, packed arena stadiums, and official YouTube broadcasts.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 space-y-2">
+              <div class="relative rounded-lg overflow-hidden tactical-border glass-card p-1 shadow-[0_0_25px_rgba(0,240,255,0.25)]">
+                <div class="h-64 sm:h-72 overflow-hidden rounded bg-tactical-bg">
+                  <img src="${ASSETS.cdl}" alt="Global Esports Impact" class="w-full h-full object-cover object-center static-img">
+                </div>
+              </div>
+              <div class="p-2 rounded bg-tactical-panel/80 border border-tactical-border text-center text-[10px] font-mono text-tactical-platinum">
+                OVERALL: Over 400M copies sold across two decades of dominance.
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 23 */
+      {
+        id: 23,
+        title: "SYNTHESIS & CONSENSUS: FINAL CONCLUSION",
+        subtitle: "Presented by Turki Allahyani (One-Line Summary per Member)",
+        presenter: "Turki Allahyani",
+        category: "CONCLUSION",
+        speakerNotes: "To finish: Malik showed how the series changed over time. Mohamed explained how game modes give players many choices. Ziad showed the community and esports. In conclusion, Call of Duty has grown by changing with players while keeping its focus on action and competition.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-5 slide-enter">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-mono text-tactical-amber uppercase tracking-widest">FINAL DEBRIEF // TURKI ALLAHYANI</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">RECAPITULATION OF MAIN IDEAS</h2>
+            </div>
+
+            <div class="space-y-2.5">
+              <div class="p-3 rounded glass-card amber-bracket tactical-border flex items-center gap-4">
+                <span class="text-xs font-mono px-2 py-1 rounded bg-amber-950 text-tactical-amber">SUBTOPIC 1</span>
+                <div class="text-xs sm:text-sm text-tactical-platinum">
+                  <strong class="text-white">Malik Mohammed:</strong> "The series changed its settings and gameplay to give players new experiences."
+                </div>
+              </div>
+
+              <div class="p-3 rounded glass-card tactical-border flex items-center gap-4">
+                <span class="text-xs font-mono px-2 py-1 rounded bg-cyan-950 text-tactical-cyan">SUBTOPIC 2</span>
+                <div class="text-xs sm:text-sm text-tactical-platinum">
+                  <strong class="text-white">Mohamed Ghazi:</strong> "Different game modes, especially online play, give players many ways to play."
+                </div>
+              </div>
+
+              <div class="p-3 rounded glass-card violet-bracket tactical-border flex items-center gap-4">
+                <span class="text-xs font-mono px-2 py-1 rounded bg-purple-950 text-purple-400">SUBTOPIC 3</span>
+                <div class="text-xs sm:text-sm text-tactical-platinum">
+                  <strong class="text-white">Ziad Allahmade:</strong> "A large community and competitive esports keep the series alive."
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded bg-tactical-panel border-2 border-tactical-amber amber-bracket tactical-border text-center space-y-2">
+              <div class="text-xs font-mono text-tactical-amber uppercase tracking-widest font-bold">OFFICIAL GROUP CONSENSUS STATEMENT</div>
+              <p class="text-base sm:text-lg font-display font-bold text-white leading-relaxed">
+                "In conclusion, Call of Duty has grown by changing with players while keeping its focus on action and competition."
+              </p>
+              <div class="text-[10px] font-mono text-tactical-muted">Source: Group Presentation Planner (2024)</div>
+            </div>
+          </div>
+        `
+      },
+
+      /* SLIDE 24: EMBEDDED 4-QUESTION GRID + SMOOTH FINALE */
+      {
+        id: 24,
+        title: "Q & A SESSION // KILLSTREAK CHALLENGE",
+        subtitle: "Floor Comms & Interactive Killstreak Knowledge Protocol",
+        presenter: "All Task Force Members",
+        category: "Q & A SESSION",
+        speakerNotes: "Thank you for listening. Now the floor is open: do you have any questions? If not, please try our four-question killstreak challenge and inspect our final debrief.",
+        render: () => `
+          <div class="w-full max-w-5xl space-y-4 slide-enter" id="slide24Wrapper">
+            
+            <!-- VIEW A: 4-QUESTION GRID -->
+            <div id="quizContainer" class="space-y-4">
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded glass-card tactical-border">
+                <div>
+                  <span class="text-xs font-mono text-tactical-cyan uppercase tracking-widest">TACTICAL KNOWLEDGE PROTOCOL</span>
+                  <h2 class="text-xl sm:text-2xl font-display font-bold text-white">KILLSTREAK INTEL CHALLENGE</h2>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-xs">
+                  <div id="streakBadge1" class="px-2.5 py-1 rounded bg-tactical-bg border border-tactical-border text-tactical-muted transition">1: UAV</div>
+                  <div id="streakBadge2" class="px-2.5 py-1 rounded bg-tactical-bg border border-tactical-border text-tactical-muted transition">2: CARE PKG</div>
+                  <div id="streakBadge3" class="px-2.5 py-1 rounded bg-tactical-bg border border-tactical-border text-tactical-muted transition">3: CHOPPER</div>
+                  <div id="streakBadge4" class="px-2.5 py-1 rounded bg-tactical-bg border border-tactical-border text-tactical-muted transition">4: NUKE ☢</div>
+                </div>
+              </div>
+
+              <!-- 4 Question Cards (2x2 Grid) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+                <!-- Q1: Turki -->
+                <div class="p-3.5 rounded glass-card amber-bracket tactical-border space-y-2" id="quizCard0">
+                  <div class="flex justify-between items-center text-xs font-mono text-tactical-amber">
+                    <span>Q1 // TURKI ALLAHYANI</span>
+                    <span class="status-indicator">UNANSWERED</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-bold text-white">When was the first Call of Duty released and by which studio?</p>
+                  <div class="grid grid-cols-2 gap-1.5 font-mono text-xs">
+                    <button onclick="window.handleQuizOption(0, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-amber text-left transition">A) 2005 (Treyarch)</button>
+                    <button onclick="window.handleQuizOption(0, true, this, 'Released Oct 29, 2003, developed by Infinity Ward.')" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-amber text-left transition">B) 2003 (Infinity Ward)</button>
+                    <button onclick="window.handleQuizOption(0, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-amber text-left transition">C) 2007 (Sledgehammer)</button>
+                    <button onclick="window.handleQuizOption(0, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-amber text-left transition">D) 2001 (Activision)</button>
+                  </div>
+                </div>
+
+                <!-- Q2: Malik -->
+                <div class="p-3.5 rounded glass-card nvg-bracket tactical-border space-y-2" id="quizCard1">
+                  <div class="flex justify-between items-center text-xs font-mono text-emerald-400">
+                    <span>Q2 // MALIK MOHAMMED</span>
+                    <span class="status-indicator">UNANSWERED</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-bold text-white">What major technical feature was introduced in Modern Warfare 2019?</p>
+                  <div class="grid grid-cols-2 gap-1.5 font-mono text-xs">
+                    <button onclick="window.handleQuizOption(1, true, this, 'Universal crossplay & cross-progression across PC, PS, Xbox.')" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-emerald-400 text-left transition">A) Crossplay & Cross-save</button>
+                    <button onclick="window.handleQuizOption(1, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-emerald-400 text-left transition">B) VR Only Mode</button>
+                    <button onclick="window.handleQuizOption(1, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-emerald-400 text-left transition">C) 1st Exoskeleton</button>
+                    <button onclick="window.handleQuizOption(1, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-emerald-400 text-left transition">D) Wall-Running</button>
+                  </div>
+                </div>
+
+                <!-- Q3: Mohamed -->
+                <div class="p-3.5 rounded glass-card tactical-border space-y-2" id="quizCard2">
+                  <div class="flex justify-between items-center text-xs font-mono text-tactical-cyan">
+                    <span>Q3 // MOHAMED GHAZI</span>
+                    <span class="status-indicator">UNANSWERED</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-bold text-white">How many players joined Warzone by April 2021?</p>
+                  <div class="grid grid-cols-2 gap-1.5 font-mono text-xs">
+                    <button onclick="window.handleQuizOption(2, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-left transition">A) 25 Million</button>
+                    <button onclick="window.handleQuizOption(2, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-left transition">B) 50 Million</button>
+                    <button onclick="window.handleQuizOption(2, true, this, 'Warzone crossed 100 million active players in April 2021.')" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-left transition">C) 100 Million+</button>
+                    <button onclick="window.handleQuizOption(2, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-cyan text-left transition">D) 200 Million</button>
+                  </div>
+                </div>
+
+                <!-- Q4: Ziad -->
+                <div class="p-3.5 rounded glass-card violet-bracket tactical-border space-y-2" id="quizCard3">
+                  <div class="flex justify-between items-center text-xs font-mono text-purple-400">
+                    <span>Q4 // ZIAD ALLAHMADE</span>
+                    <span class="status-indicator">UNANSWERED</span>
+                  </div>
+                  <p class="text-xs sm:text-sm font-bold text-white">How many major live events were scheduled for the 2024 CDL season?</p>
+                  <div class="grid grid-cols-2 gap-1.5 font-mono text-xs">
+                    <button onclick="window.handleQuizOption(3, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-purple-400 text-left transition">A) 2 Majors</button>
+                    <button onclick="window.handleQuizOption(3, true, this, 'The 2024 season featured four major live stadium tournaments.')" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-purple-400 text-left transition">B) 4 Majors</button>
+                    <button onclick="window.handleQuizOption(3, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-purple-400 text-left transition">C) 6 Majors</button>
+                    <button onclick="window.handleQuizOption(3, false, this)" class="p-2 rounded bg-tactical-panel border border-tactical-border hover:border-purple-400 text-left transition">D) 8 Majors</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comms bar & Reveal Debrief Button -->
+              <div class="p-3 rounded bg-tactical-panel/80 border border-tactical-cyan/40 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <span class="text-xs font-mono text-tactical-platinum">COMMS CHANNEL OPEN: "Do you have any questions for our Task Force?"</span>
+                <div class="flex items-center gap-2">
+                  <button onclick="window.resetQuiz()" class="px-2.5 py-1.5 rounded bg-tactical-surface border border-tactical-border hover:border-tactical-amber text-tactical-muted hover:text-tactical-amber font-mono text-xs transition">
+                    RESET INTEL
+                  </button>
+                  <button onclick="window.showFinaleDebrief()" class="px-3.5 py-1.5 rounded bg-amber-950 border border-tactical-amber hover:bg-amber-950 hover:text-black text-tactical-amber font-mono text-xs font-bold transition flex items-center gap-1.5 shadow-[0_0_12px_rgba(255,119,0,0.3)]">
+                    <span>FINAL MISSION DEBRIEF [→]</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- VIEW B: EMBEDDED FINALE DEBRIEF -->
+            <div id="finaleDebriefContainer" class="hidden p-5 rounded-lg glass-card border border-tactical-amber space-y-4 shadow-[0_0_25px_rgba(255,119,0,0.25)]">
+              <div class="flex items-center justify-between border-b border-tactical-amber/50 pb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-tactical-amber animate-ping"></span>
+                  <span class="text-xs font-mono text-tactical-amber font-bold uppercase tracking-widest">
+                    MISSION ACCOMPLISHED // FINAL TASK FORCE DEBRIEF
+                  </span>
+                </div>
+                <span class="text-xs font-mono text-emerald-400 font-bold">ALL INTEL VERIFIED ✓</span>
+              </div>
+
+              <!-- Agreed Consensus Big Card -->
+              <div class="p-4 rounded-lg bg-tactical-panel border-2 border-tactical-amber amber-bracket tactical-border text-center space-y-2 shadow-[0_0_20px_rgba(255,119,0,0.2)]">
+                <div class="text-[11px] font-mono text-tactical-amber uppercase tracking-widest font-bold">
+                  OFFICIAL GROUP CONSENSUS STATEMENT (TURKI ALLAHYANI)
+                </div>
+                <p class="text-base sm:text-xl font-display font-black text-white leading-relaxed">
+                  "In conclusion, Call of Duty has grown by changing with players while keeping its focus on action and competition."
+                </p>
+              </div>
+
+              <!-- 4 Operators Summary Cards -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-left">
+                <div class="p-3 rounded glass-card amber-bracket tactical-border space-y-1">
+                  <div class="flex justify-between items-center text-tactical-amber font-mono font-bold">
+                    <span>OPERATOR 1: TURKI ALLAHYANI</span>
+                    <span class="text-emerald-400">✓ DECLASSIFIED</span>
+                  </div>
+                  <div class="text-white font-display font-semibold">Franchise Origins &amp; 400M+ Milestone</div>
+                  <p class="text-tactical-muted leading-relaxed">
+                    Launched Oct 29, 2003 on PC by Infinity Ward with authentic squad warfare, reaching 400M+ premium copies sold.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded glass-card nvg-bracket tactical-border space-y-1">
+                  <div class="flex justify-between items-center text-emerald-400 font-mono font-bold">
+                    <span>OPERATOR 2: MALIK MOHAMMED</span>
+                    <span class="text-emerald-400">✓ DECLASSIFIED</span>
+                  </div>
+                  <div class="text-white font-display font-semibold">Warfare Evolution &amp; Crossplay</div>
+                  <p class="text-tactical-muted leading-relaxed">
+                    Shifted to modern combat in 2007, future movement with 75M hours in Black Ops III, and universal crossplay in 2019.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded glass-card tactical-border space-y-1">
+                  <div class="flex justify-between items-center text-tactical-cyan font-mono font-bold">
+                    <span>OPERATOR 3: MOHAMED GHAZI</span>
+                    <span class="text-emerald-400">✓ DECLASSIFIED</span>
+                  </div>
+                  <div class="text-white font-display font-semibold">Three Pillars &amp; 100M+ Warzone</div>
+                  <p class="text-tactical-muted leading-relaxed">
+                    Established Campaign, Multiplayer, and co-op Zombies, while Warzone united over 100M battle royale operators.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded glass-card violet-bracket tactical-border space-y-1">
+                  <div class="flex justify-between items-center text-purple-400 font-mono font-bold">
+                    <span>OPERATOR 4: ZIAD ALLAHMADE</span>
+                    <span class="text-emerald-400">✓ DECLASSIFIED</span>
+                  </div>
+                  <div class="text-white font-display font-semibold">Global Community &amp; CDL Esports</div>
+                  <p class="text-tactical-muted leading-relaxed">
+                    Founded the franchised Call of Duty League in 2020, hosting 4 live stadium Majors and global YouTube broadcasts in 2024.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Replay & Return Controls -->
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-tactical-border/70 text-xs font-mono">
+                <span class="text-emerald-400 flex items-center gap-1.5 font-bold">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  TASK FORCE SHOWCASE COMPLETE // FLOOR OPEN FOR QUESTIONS
+                </span>
+                <div class="flex items-center gap-2">
+                  <button onclick="window.hideFinaleDebrief()" class="px-3 py-1.5 rounded bg-tactical-panel border border-tactical-border hover:border-tactical-amber text-tactical-muted hover:text-white transition">
+                    ↺ RETEST INTEL QUESTIONS
+                  </button>
+                  <button onclick="renderSlide(0)" class="px-3.5 py-1.5 rounded bg-amber-950 border border-tactical-amber text-tactical-amber hover:bg-tactical-amber hover:text-black font-bold transition">
+                    ↺ RESTART FROM SLIDE 01
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        `
+      }
+    ];
+
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.04);
+      }
+      playSlideChange() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(240, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(480, this.ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      }
+      playReveal() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(780, this.ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.07, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.12);
+      }
+      playHitmarker() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, this.ctx.currentTime + 0.06);
+        gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.06);
+      }
+      playError() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.15);
+      }
+    }
+    const sound = new SoundEngine();
+
+    function animateCounters() {
+      const counters = document.querySelectorAll('[data-counter]');
+      counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-counter'));
+        if (isNaN(target)) return;
+        const suffix = counter.getAttribute('data-suffix') || '';
+        const prefix = counter.getAttribute('data-prefix') || '';
+        const duration = 1000;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const currentVal = Math.round(target * easeOut);
+          counter.textContent = `${prefix}${currentVal}${suffix}`;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            counter.textContent = `${prefix}${target}${suffix}`;
+          }
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    let currentSlideIndex = 0;
+    const totalSlides = SLIDES.length;
+    let quizStreak = 0;
+    const answeredQuestions = new Set();
+
+    let slideContainer, prevBtn, nextBtn, slideProgressBar, slideCounterBadge;
+    let headerPresenter, headerTopic, currentPresenterBadge, speakerScriptText;
+    let scriptContentBox, toggleScriptBtn, chevronScript, audioToggleBtn;
+    let fullscreenBtn, drawerToggleBtn, slideIndexModal, closeIndexModalBtn, indexGridContainer, telemetryData;
+
+    function initDomElements() {
+      slideContainer = document.getElementById('slideContainer');
+      prevBtn = document.getElementById('prevBtn');
+      nextBtn = document.getElementById('nextBtn');
+      slideProgressBar = document.getElementById('slideProgressBar');
+      slideCounterBadge = document.getElementById('slideCounterBadge');
+      headerPresenter = document.getElementById('headerPresenter');
+      headerTopic = document.getElementById('headerTopic');
+      currentPresenterBadge = document.getElementById('currentPresenterBadge');
+      speakerScriptText = document.getElementById('speakerScriptText');
+      scriptContentBox = document.getElementById('scriptContentBox');
+      toggleScriptBtn = document.getElementById('toggleScriptBtn');
+      chevronScript = document.getElementById('chevronScript');
+      audioToggleBtn = document.getElementById('audioToggleBtn');
+      fullscreenBtn = document.getElementById('fullscreenBtn');
+      drawerToggleBtn = document.getElementById('drawerToggleBtn');
+      slideIndexModal = document.getElementById('slideIndexModal');
+      closeIndexModalBtn = document.getElementById('closeIndexModalBtn');
+      indexGridContainer = document.getElementById('indexGridContainer');
+      telemetryData = document.getElementById('telemetryData');
+    }
+
+    function renderSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      currentSlideIndex = index;
+      const slide = SLIDES[index];
+
+      if (slideContainer) {
+        slideContainer.innerHTML = slide.render();
+        const enterEl = slideContainer.querySelector('.slide-enter');
+        if (enterEl) {
+          requestAnimationFrame(() => {
+            enterEl.classList.add('slide-active');
+            animateCounters();
+          });
+        }
+      }
+
+      const slideNumPadded = String(index + 1).padStart(2, '0');
+      const totalPadded = String(totalSlides).padStart(2, '0');
+      if (slideCounterBadge) slideCounterBadge.innerText = `${slideNumPadded} / ${totalPadded}`;
+      if (headerPresenter) headerPresenter.innerText = `PRESENTER: ${slide.presenter.toUpperCase()}`;
+      if (headerTopic) headerTopic.innerText = `TOPIC: ${slide.category}`;
+      if (currentPresenterBadge) currentPresenterBadge.innerText = `PRESENTER: ${slide.presenter.toUpperCase()}`;
+      if (speakerScriptText) speakerScriptText.innerText = `"${slide.speakerNotes}"`;
+
+      const progressPercent = ((index + 1) / totalSlides) * 100;
+      if (slideProgressBar) slideProgressBar.style.width = `${progressPercent}%`;
+
+      if (prevBtn) {
+        prevBtn.disabled = index === 0;
+        prevBtn.style.opacity = index === 0 ? '0.4' : '1';
+      }
+
+      if (nextBtn) {
+        if (index === totalSlides - 1) {
+          nextBtn.innerHTML = `<span>FINISH // DEBRIEF [→]</span> <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
+          nextBtn.classList.add('border-tactical-amber', 'text-tactical-amber', 'shadow-[0_0_15px_rgba(255,119,0,0.4)]');
+        } else {
+          nextBtn.innerHTML = `<span>NEXT [→]</span> <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>`;
+          nextBtn.classList.remove('border-tactical-amber', 'text-tactical-amber', 'shadow-[0_0_15px_rgba(255,119,0,0.4)]');
+        }
+      }
+    }
+
+    function goToNextSlide() {
+      if (currentSlideIndex < totalSlides - 1) {
+        sound.playSlideChange();
+        renderSlide(currentSlideIndex + 1);
+      } else if (currentSlideIndex === totalSlides - 1) {
+        window.showFinaleDebrief();
+      }
+    }
+
+    function goToPrevSlide() {
+      if (currentSlideIndex > 0) {
+        sound.playSlideChange();
+        renderSlide(currentSlideIndex - 1);
+      }
+    }
+
+    window.switchDossier = function(idx) {
+      sound.playReveal();
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`dossierTab${i}`);
+        if (btn) {
+          if (i === idx) {
+            btn.className = "px-4 py-2 rounded bg-amber-950 border border-tactical-amber text-tactical-amber font-bold shadow-[0_0_10px_rgba(255,119,0,0.25)]";
+          } else {
+            btn.className = "px-4 py-2 rounded bg-tactical-panel border border-tactical-border text-tactical-platinum hover:border-tactical-amber";
+          }
+        }
+      }
+
+      const data = DOSSIER_DATA[idx];
+      const codeEl = document.getElementById('dossierCode');
+      const statEl = document.getElementById('dossierStatus');
+      const headEl = document.getElementById('dossierHeading');
+      const bodyEl = document.getElementById('dossierBody');
+      const srcEl = document.getElementById('dossierSource');
+      const thumbEl = document.getElementById('dossierThumb');
+
+      if (codeEl) codeEl.innerText = data.code;
+      if (statEl) statEl.innerText = `STATUS: ${data.status}`;
+      if (headEl) headEl.innerText = data.heading;
+      if (bodyEl) bodyEl.innerText = data.body;
+      if (srcEl) srcEl.innerText = data.source;
+      if (thumbEl) thumbEl.src = data.thumb;
+
+      if (speakerScriptText && data.speakerScript) {
+        speakerScriptText.innerText = `"${data.speakerScript}"`;
+      }
+    };
+
+    window.handleQuizOption = function(qIndex, isCorrect, btnEl, explanation) {
+      if (answeredQuestions.has(qIndex)) return;
+      const card = document.getElementById(`quizCard${qIndex}`);
+      const statusEl = card ? card.querySelector('.status-indicator') : null;
+
+      if (isCorrect) {
+        sound.playHitmarker();
+        answeredQuestions.add(qIndex);
+        quizStreak++;
+
+        btnEl.classList.remove('bg-tactical-panel');
+        btnEl.classList.add('bg-emerald-950', 'border-emerald-400', 'text-emerald-300', 'font-bold');
+
+        if (statusEl) {
+          statusEl.innerText = 'VERIFIED INTEL ✓';
+          statusEl.className = 'status-indicator text-emerald-400 font-bold';
+        }
+
+        if (explanation && card) {
+          const fb = document.createElement('div');
+          fb.className = 'p-2 rounded bg-emerald-950/60 border border-emerald-500/40 text-[11px] font-mono text-emerald-300 mt-2';
+          fb.innerText = `INTEL CONFIRMED: ${explanation}`;
+          card.appendChild(fb);
+        }
+
+        const badge = document.getElementById(`streakBadge${quizStreak}`);
+        if (badge) {
+          badge.className = 'px-2.5 py-1 rounded bg-amber-950 border border-tactical-amber text-tactical-amber font-bold animate-pulse shadow-[0_0_12px_rgba(255,119,0,0.5)]';
+        }
+
+        if (quizStreak === 4) {
+          setTimeout(() => {
+            window.showFinaleDebrief();
+          }, 900);
+        }
+      } else {
+        sound.playError();
+        btnEl.classList.add('bg-red-950', 'border-red-500', 'text-red-400', 'shake-error');
+        setTimeout(() => {
+          btnEl.classList.remove('bg-red-950', 'border-red-500', 'text-red-400', 'shake-error');
+        }, 600);
+      }
+    };
+
+    window.showFinaleDebrief = function() {
+      sound.playReveal();
+      const quizContainer = document.getElementById('quizContainer');
+      const finaleContainer = document.getElementById('finaleDebriefContainer');
+
+      if (quizContainer && finaleContainer) {
+        quizContainer.classList.add('hidden');
+        finaleContainer.classList.remove('hidden');
+        finaleContainer.classList.add('slide-enter', 'slide-active');
+      }
+    };
+
+    window.hideFinaleDebrief = function() {
+      sound.playClick();
+      const quizContainer = document.getElementById('quizContainer');
+      const finaleContainer = document.getElementById('finaleDebriefContainer');
+
+      if (quizContainer && finaleContainer) {
+        finaleContainer.classList.add('hidden');
+        quizContainer.classList.remove('hidden');
+      }
+    };
+
+    window.resetQuiz = function() {
+      sound.playClick();
+      quizStreak = 0;
+      answeredQuestions.clear();
+      renderSlide(currentSlideIndex);
+    };
+
+    function setupEventListeners() {
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
+          goToNextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          goToPrevSlide();
+        } else if (e.key === 'Escape') {
+          if (slideIndexModal && !slideIndexModal.classList.contains('hidden')) {
+            slideIndexModal.classList.add('hidden');
+          }
+        }
+      });
+
+      if (nextBtn) nextBtn.addEventListener('click', goToNextSlide);
+      if (prevBtn) prevBtn.addEventListener('click', goToPrevSlide);
+
+      let scriptDrawerOpen = false;
+      if (toggleScriptBtn) {
+        toggleScriptBtn.addEventListener('click', () => {
+          sound.playClick();
+          scriptDrawerOpen = !scriptDrawerOpen;
+          if (scriptContentBox) {
+            if (scriptDrawerOpen) {
+              scriptContentBox.classList.remove('hidden');
+              if (chevronScript) chevronScript.style.transform = 'rotate(180deg)';
+            } else {
+              scriptContentBox.classList.add('hidden');
+              if (chevronScript) chevronScript.style.transform = 'rotate(0deg)';
+            }
+          }
+        });
+      }
+
+      if (audioToggleBtn) {
+        audioToggleBtn.addEventListener('click', () => {
+          sound.enabled = !sound.enabled;
+          audioToggleBtn.innerHTML = sound.enabled 
+            ? `<svg class="w-4 h-4 text-tactical-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg> <span class="hidden sm:inline">SFX: ON</span>`
+            : `<svg class="w-4 h-4 text-tactical-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" /></svg> <span class="hidden sm:inline">SFX: OFF</span>`;
+        });
+      }
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          sound.playClick();
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+          }
+        });
+      }
+
+      if (drawerToggleBtn) {
+        drawerToggleBtn.addEventListener('click', () => {
+          sound.playClick();
+          populateIndexModal();
+          if (slideIndexModal) slideIndexModal.classList.remove('hidden');
+        });
+      }
+
+      if (closeIndexModalBtn && slideIndexModal) {
+        closeIndexModalBtn.addEventListener('click', () => {
+          slideIndexModal.classList.add('hidden');
+        });
+      }
+    }
+
+    function populateIndexModal() {
+      if (!indexGridContainer) return;
+      indexGridContainer.innerHTML = '';
+      SLIDES.forEach((slide, idx) => {
+        const item = document.createElement('div');
+        const isActive = idx === currentSlideIndex;
+        item.className = `p-3 rounded border font-mono cursor-pointer transition flex flex-col justify-between ${
+          isActive 
+            ? 'bg-cyan-950/80 border-tactical-cyan text-white shadow-[0_0_12px_rgba(0,240,255,0.35)]' 
+            : 'bg-tactical-panel border-tactical-border text-tactical-platinum hover:border-tactical-cyan/60'
+        }`;
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-[10px] text-tactical-muted mb-1">
+            <span class="text-tactical-cyan font-bold">SLIDE ${String(idx + 1).padStart(2, '0')}</span>
+            <span>${slide.category}</span>
+          </div>
+          <div class="text-xs font-bold truncate mb-1">${slide.title}</div>
+          <div class="text-[10px] text-tactical-amber truncate">👤 ${slide.presenter}</div>
+        `;
+        item.onclick = () => {
+          sound.playSlideChange();
+          renderSlide(idx);
+          if (slideIndexModal) slideIndexModal.classList.add('hidden');
+        };
+        indexGridContainer.appendChild(item);
+      });
+    }
+
+    let canvas, ctx, width, height;
+    const particles = [];
+    const PARTICLE_COUNT = 45;
+    let radarAngle = 0;
+    let sonarRadius1 = 0;
+    let sonarRadius2 = 45;
+
+    const radarBlips = [
+      { dist: 40, angle: 0.8, alpha: 0 },
+      { dist: 65, angle: 2.3, alpha: 0 },
+      { dist: 80, angle: 4.1, alpha: 0 },
+      { dist: 55, angle: 5.4, alpha: 0 }
+    ];
+
+    function initRadar() {
+      canvas = document.getElementById('radarCanvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+
+      function resizeCanvas() {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 1.1,
+          vy: (Math.random() - 0.5) * 1.1,
+          radius: Math.random() * 1.8 + 0.6,
+          alpha: Math.random() * 0.4 + 0.2
+        });
+      }
+    }
+
+    function animateRadar() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, width, height);
+
+      const rx = width - 130;
+      const ry = 130;
+      const rRadius = 95;
+
+      sonarRadius1 += 1.2;
+      if (sonarRadius1 > rRadius) sonarRadius1 = 0;
+      const sonarAlpha1 = Math.max(0, 0.35 * (1 - sonarRadius1 / rRadius));
+
+      sonarRadius2 += 1.2;
+      if (sonarRadius2 > rRadius) sonarRadius2 = 0;
+      const sonarAlpha2 = Math.max(0, 0.35 * (1 - sonarRadius2 / rRadius));
+
+      ctx.save();
+      ctx.strokeStyle = `rgba(0, 240, 255, ${sonarAlpha1})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(rx, ry, sonarRadius1, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = `rgba(0, 240, 255, ${sonarAlpha2})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(rx, ry, sonarRadius2, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(rx, ry, rRadius, 0, Math.PI * 2);
+      ctx.arc(rx, ry, rRadius * 0.66, 0, Math.PI * 2);
+      ctx.arc(rx, ry, rRadius * 0.33, 0, Math.PI * 2);
+      ctx.moveTo(rx - rRadius, ry);
+      ctx.lineTo(rx + rRadius, ry);
+      ctx.moveTo(rx, ry - rRadius);
+      ctx.lineTo(rx, ry + rRadius);
+      ctx.stroke();
+
+      radarAngle += 0.038;
+      if (radarAngle > Math.PI * 2) radarAngle -= Math.PI * 2;
+
+      ctx.beginPath();
+      ctx.moveTo(rx, ry);
+      ctx.arc(rx, ry, rRadius, radarAngle - 0.25, radarAngle);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(rx, ry);
+      ctx.lineTo(rx + Math.cos(radarAngle) * rRadius, ry + Math.sin(radarAngle) * rRadius);
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.7)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      radarBlips.forEach(blip => {
+        const diff = Math.abs(radarAngle - blip.angle);
+        if (diff < 0.08 || Math.abs(diff - Math.PI * 2) < 0.08) {
+          blip.alpha = 1.0;
+        } else {
+          blip.alpha = Math.max(0, blip.alpha - 0.02);
+        }
+        if (blip.alpha > 0) {
+          const bx = rx + Math.cos(blip.angle) * blip.dist;
+          const by = ry + Math.sin(blip.angle) * blip.dist;
+          ctx.fillStyle = `rgba(255, 119, 0, ${blip.alpha})`;
+          ctx.beginPath();
+          ctx.arc(bx, by, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      ctx.restore();
+
+      ctx.fillStyle = '#00f0ff';
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = p.x - particles[j].x;
+          const dy = p.y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.12 * (1 - dist / 100)})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      });
+      ctx.globalAlpha = 1.0;
+
+      requestAnimationFrame(animateRadar);
+    }
+
+    function startTelemetry() {
+      let lat = 34.0522;
+      let lon = 118.2437;
+      setInterval(() => {
+        if (!telemetryData) return;
+        lat += (Math.random() - 0.5) * 0.001;
+        lon += (Math.random() - 0.5) * 0.001;
+        telemetryData.innerText = `GRID: ${lat.toFixed(4)}°N | ${lon.toFixed(4)}°W`;
+      }, 2500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initDomElements();
+      setupEventListeners();
+      renderSlide(0);
+      initRadar();
+      animateRadar();
+      startTelemetry();
+    });
+  </script>
+</body>
+</html>
